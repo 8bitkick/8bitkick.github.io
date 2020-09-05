@@ -9,7 +9,7 @@ Using 2 LSB on a 900x900 PNG-32 gives us around 791 kilobytes of data per Twitte
 
 ## Byte encoding
 
-We're just doing basic 2 LSB and not encrypting the data. 
+Note - we're just doing basic 2 LSB and not encrypting the data. 
 
 ~~~~~~
 
@@ -27,3 +27,10 @@ We're just doing basic 2 LSB and not encrypting the data.
 
  Where x is the existing image pixel values, which are preserved
 ~~~~~~
+
+## Live demo
+
+The image below has the source code embedded into it! You can open the file hidden in the image [here](https://8bitkick.github.io/stegatron/)
+
+![elite](https://raw.githubusercontent.com/8bitkick/8bitkick.github.io/master/stegatron/EhGs5RWVkAANqlB.png)
+
