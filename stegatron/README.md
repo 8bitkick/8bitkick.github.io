@@ -1,4 +1,4 @@
-# stegatron
+# stegatron - bbcmicrobot steganography
 Twitter image compatible image steganography
 
 ## Background
