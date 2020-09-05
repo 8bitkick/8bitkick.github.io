@@ -34,7 +34,7 @@ Note - we're just doing basic 2 LSB and not encrypting the data.
 
 ## Live demo
 
-The image below has the Elite source code embedded into it! You can open the 606K file hidden zip in the image [here](https://8bitkick.github.io/stegatron/)
+The image below has the Elite source code embedded into it! You can open the hidden 606KB zip file (1.3M uncompressed) in the image [here](https://8bitkick.github.io/stegatron/)
 
 ![elite](https://raw.githubusercontent.com/8bitkick/8bitkick.github.io/master/stegatron/EhGs5RWVkAANqlB.png)
 
