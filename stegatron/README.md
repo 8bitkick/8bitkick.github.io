@@ -5,7 +5,7 @@ bbcmicrobot steganography
 
 Sending binary programs to run on the [@bbcmicrobot](https://twitter.com/bbcmicrobot) Twitter bot requires us develop some new tricks. 
 
-[Image steganography](https://towardsdatascience.com/hiding-data-in-an-image-image-steganography-using-python-e491b68b1372) is a technique to hide data in images, with a common method being to use the 2 least significant bits (LSB) per byte of pixel data making the encoding almost imperceptible. Another notable application of steganography to encode cool retro programs in PNG images is [pico8](https://pico-8.fandom.com/wiki/P8PNGFileFormat).
+[Image steganography](https://towardsdatascience.com/hiding-data-in-an-image-image-steganography-using-python-e491b68b1372) is a technique to hide data in images, with a common method being to use the 2 least significant bits (LSB) per byte of pixel data making the encoding almost imperceptible. A notable application of this steganographic process to encode cool retro programs in PNG images is [pico8](https://pico-8.fandom.com/wiki/P8PNGFileFormat). Like the pico8 we're not doing steganography to hide the communication of the data - rather we are using it as a larger more flexible medium on Twitter. The image 'hiding' program data is then free to be visibly labeled with the title, a screenshot, source code listing, whatever.  
 
 At the time of writing Twitter preserve PNG images of [900x900 pixels or less](https://twittercommunity.com/t/upcoming-changes-to-png-image-support/118695) which which means the 2 LSB technique will work (Twitter may transcode images larger than this to JPEG which requires more complex steganographic [algorithms](http://www.cs.unc.edu/~lin/COMP089H/LEC/steganography.pdf)).
 
