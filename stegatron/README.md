@@ -1,4 +1,4 @@
-# stegatron: embed data in Twitter images
+# Embedding data in Twitter images
 bbcmicrobot steganography
 
 ## Background
