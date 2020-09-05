@@ -34,6 +34,20 @@ Note - we're just doing basic 2 LSB and not encrypting the data.
  Where x is the existing image pixel values, which are preserved
 ~~~~~~
 
+## Encoding function
+
+Here's where the magic happens. I discovered applying bitwise operators that nudge the top bit of `wordOut` variable causes it to wrap to negative (I would have thought only arithmetic operations could cause this). To get around this behavior I defined it as single element `Uint32Array` 32-bit unsigned array. Maybe some JS experts out there have a better solution. 
+
+~~~~~
+function byteEncode(byteIn){
+  var wordOut = new Uint32Array(1).fill(0); // JS var treated as signed otherwise
+  for (var i = 0; i<4; i++){
+    wordOut[0] <<= 8; wordOut[0] |= (byteIn & 3); byteIn  >>= 2;
+  }
+  return wordOut[0];
+}
+~~~~~
+
 ## Live demo
 
 The image below has a zip of Elite source code embedded into it! 
