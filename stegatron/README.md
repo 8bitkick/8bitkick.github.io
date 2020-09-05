@@ -36,7 +36,7 @@ Note - we're just doing basic 2 LSB and not encrypting the data.
 
 ## Encoding function
 
-Here's where the magic happens. I discovered applying bitwise operators that nudge the top bit of `wordOut` variable causes it to wrap to negative (I would have thought only arithmetic operations could cause this). To get around this behavior I defined it as single element `Uint32Array` 32-bit unsigned array. Maybe some JS experts out there have a better solution. 
+Here's where the magic happens. Applying bitwise operators that nudge the top bit of `wordOut` variable causes it to wrap to negative. To get around this signed arithmetic behavior I defined it as single element `Uint32Array` 32-bit unsigned array. 
 
 ~~~~~
 function byteEncode(byteIn){
