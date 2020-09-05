@@ -1,8 +1,8 @@
 // Hides data a PNG file using 2 LSB steganography.
 
-var canvas 	= document.getElementById("myCanvas");
+var canvas  = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
-var img 	  = new Image();
+var img     = new Image();
 
 var offset 	= 1024;
 var imageSize	= canvas.width * canvas.height;
