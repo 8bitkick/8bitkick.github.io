@@ -30,7 +30,7 @@ function byteDecode(wordIn){
 
 function stegEncode(loadDataBuffer){
   var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  var image32	= new Uint32Array	(imageData.data.buffer);
+  var image32	= new Uint32Array(imageData.data.buffer);
   var loadData8 = new Uint8Array(loadDataBuffer);
   
   function wordEncode(pointer,wordIn){
