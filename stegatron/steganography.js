@@ -1,4 +1,5 @@
 /* 
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -11,16 +12,32 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+ Hides data in a PNG-32 file using 2 LSB steganography.
+
+ Data byte to be encoded
+ =======================
+ 7  6  5  4  3  2  1  0
+ ----------------------
+ R  R  G  G  B  B  A  A
+
+ 32-bit pixel of a PNG-32 image
+ ==============================
+ 31 30 29 28 27 26 25 24 | 23 22 21 20 19 18 17 16 | 15 14 13 12 11 10  9  8  |  7  6  5  4  3  2  1  0
+ ------------------------------------------------------------------------------------------------------
+  x  x  x  x  x  x  A  A |  x  x  x  x  x  x  B  B |  x  x  x  x  x  x  G  G  |  x  x  x  x  x  x  R  R
+
+ Where x is the existing image pixel values, which are preserved
+
 */
 
-// Hides data in a PNG file using 2 LSB steganography.
 
 var version   = 0x00000001;
 var magicWord = 0x12345678;
 var offset    = 1024;
 var mask      = new Uint32Array	(1);
 mask[0]       =~byteEncode(0xff);
-
 
   function byteEncode(byteIn){
   	var wordOut = new Uint32Array(1).fill(0); // JS var treated as signed otherwise
