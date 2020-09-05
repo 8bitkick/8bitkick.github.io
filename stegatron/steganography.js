@@ -1,4 +1,4 @@
-// Hides data a PNG file using 2 LSB steganography.
+// Hides data in a PNG file using 2 LSB steganography.
 
 var canvas  = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
