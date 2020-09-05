@@ -34,7 +34,10 @@ Note - we're just doing basic 2 LSB and not encrypting the data.
 
 ## Live demo
 
-The image below has the Elite source code embedded into it! You can [open the hidden 606KB zip file here](https://8bitkick.github.io/stegatron/)
+The image below has a zip of Elite source code embedded into it! 
+
+You can [decode the file live in your web browser](https://8bitkick.github.io/stegatron/) using the index.html in this repo.
+
 
 The file encoded in the image is a zip of K Connell's [elite-beebasm](https://github.com/kieranhj/elite-beebasm) repo. If you're looking for the latest fully documented version of this you can find it [here](https://github.com/markmoxon/elite-beebasm). 
 
