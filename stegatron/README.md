@@ -1,5 +1,5 @@
-# stegatron - bbcmicrobot steganography
-Twitter image compatible image steganography
+# stegatron: embed data in Twitter images
+bbcmicrobot steganography
 
 ## Background
 
