@@ -39,7 +39,7 @@ The image below has a zip of Elite source code embedded into it!
 You can [decode the file live in your web browser](https://8bitkick.github.io/stegatron/) using the index.html in this repo.
 
 
-The file encoded in the image is a zip of K Connell's [elite-beebasm](https://github.com/kieranhj/elite-beebasm) repo. If you're looking for the latest fully documented version of this you can find it [here](https://github.com/markmoxon/elite-beebasm). 
+The file encoded in the image is a zip of Kieran Connell's [elite-beebasm](https://github.com/kieranhj/elite-beebasm) repo. If you're looking for Mark Moxon's fully documented version of this you can find it [here](https://github.com/markmoxon/elite-beebasm). 
 
 ![elite](https://raw.githubusercontent.com/8bitkick/8bitkick.github.io/master/stegatron/EhGs5RWVkAANqlB.png)
 
