@@ -1,6 +1,5 @@
 // Hides data a PNG file using 2 LSB steganography.
 
-
 var canvas 	= document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
 var img 	  = new Image();
@@ -12,34 +11,6 @@ var mask 	= new Uint32Array(1);
 mask[0]		=~byteEncode(0xff);
 var magicWord 	= 0x12345678;
 
-// load file to encode
-function readFile(e) {
-  var file = e.target.files[0];
-  if (!file) {
-    return;
-  }
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var fileData = e.target.result;
-    stegEncode(fileData);
-    stegDecode();
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-// load image
-function loadImage(e) {
-  var file = e.target.files[0].name;
-  if (!file) {
-    return;
-  }
-  img.onload = function() {
-    context.clearRect( 0, 0, canvas.width, canvas.height);
-    context.drawImage(img, 0, 0);
-    stegDecode();
-  };
-  img.src = file;
-}
 
 function byteEncode(byteIn){
   var wordOut = new Uint32Array(1).fill(0); // JS var treated as signed otherwise
@@ -111,6 +82,35 @@ function stegDecode(){
   var link = document.getElementById('download_link');
   link.href = url;
   link.download = "hidden.zip";
+}
+
+// load file to encode
+function readFile(e) {
+  var file = e.target.files[0];
+  if (!file) {
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var fileData = e.target.result;
+    stegEncode(fileData);
+    stegDecode();
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// load image
+function loadImage(e) {
+  var file = e.target.files[0].name;
+  if (!file) {
+    return;
+  }
+  img.onload = function() {
+    context.clearRect( 0, 0, canvas.width, canvas.height);
+    context.drawImage(img, 0, 0);
+    stegDecode();
+  };
+  img.src = file;
 }
 
 loadImage({ target: {files:[{name:"EhGs5RWVkAANqlB.png"}]}});
