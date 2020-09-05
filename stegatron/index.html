@@ -2,12 +2,67 @@
 <html>
 <head><meta charset="utf-8" /></head>
 <body>
-  <h1>Simple steganography test</h1>
-  <p>You can store file data in images. The image below contains source code for Acornsoft Elite in a 606KB zip file embedded using 2 LSB <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/stegatron">steganography</a>.</p> 
-  <div>
-    <a id="download_link" download="hidden.zip" href=”” >Download Hidden File</a>
-  </div>
-  <canvas id="myCanvas" width=900 height=900></canvas>
+	<h1>Simple steganography test</h1>
+	<p>You can store file data in images. The image below contains source code for Acornsoft Elite in a 606KB zip file embedded using 2 LSB <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/stegatron">steganography</a>.</p>
+	<div>
+		<a id="download-link" download="hidden.zip" href=”” >Download Hidden File</a>
+	</div>
+	<canvas id="myCanvas" width=900 height=900></canvas>
 </body>
 <script src="steganography.js"></script>
+<script>
+
+
+// load file to encode
+function loadFile(e) {
+	var file = e.target.files[0];
+	if (!file) {
+		return;
+	}
+	var reader = new FileReader();
+	reader.onload = function(e) {
+		var fileData = e.target.result;
+		stegEncode(fileData);
+		var decodedData = stegDecode();
+		updateFileDownload(decodedData);
+	};
+	reader.readAsArrayBuffer(file);
+}
+
+// load image
+function loadImage(e) {
+	var file = e.target.files[0].name;
+	console.log(e.target.files[0]);
+	if (!file) {
+		return;
+	}
+	img.onload = function() {
+		context.clearRect( 0, 0, canvas.width, canvas.height);
+		context.drawImage(img, 0, 0);
+		var decodedData = stegDecode();
+		updateFileDownload(decodedData);
+	};
+	img.src = file;
+}
+
+function updateFileDownload(decodedData){
+	var data = new Blob([decodedData.buffer],{type: 'application/octet-stream'});
+	var url = window.URL.createObjectURL(data);
+	var link = document.getElementById('download-link');
+	link.href = url;
+	link.download = "hidden.zip";
+}
+
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+var img = new Image();
+
+var buttonImageDownload = document.getElementById('btn-download');
+
+//document.getElementById('file-input').addEventListener('change', loadFile, false);
+//document.getElementById('image-input').addEventListener('change', loadImage, false);
+
+loadImage({ target: {files:[{name:"EhGs5RWVkAANqlB.png"}]}});
+
+</script>
 </html>
