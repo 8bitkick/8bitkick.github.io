@@ -18,8 +18,8 @@
 var version   = 0x00000001;
 var magicWord = 0x12345678;
 var offset    = 1024;
-var mask 			= new Uint32Array	(1);
-mask[0]				=~byteEncode(0xff);
+var mask      = new Uint32Array	(1);
+mask[0]       =~byteEncode(0xff);
 
 
   function byteEncode(byteIn){
@@ -69,7 +69,7 @@ mask[0]				=~byteEncode(0xff);
 
   function stegDecode(){
   	var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  	var image32		= new Uint32Array	(imageData.data.buffer);
+  	var image32	  = new Uint32Array(imageData.data.buffer);
 
   	function wordDecode(pointer){
   		var wordOut = 0;
