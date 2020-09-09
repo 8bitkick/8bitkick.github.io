@@ -1,0 +1,337 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/97/three.min.js"></script>
+  <script src="libs/GLTFLoader.js"></script>
+  <script src="libs/fft.js"></script>
+  <style>
+  body,h1,p {font-size: 10px;margin: 16;background: #000001;color: #555555;font-family: 'Source Sans Pro', sans-serif;}
+  h1 {font-size: 20px;}
+  #bigButton {
+    background-color: green; border: none; color: black; padding: 1px; text-align: center;
+    text-decoration: none; font-size: 4px; margin: 4px 10px; height: 16px; width: 16px;
+    border-radius: 50%; outline:none; font-family: 'Open Sans', sans-serif;
+  }
+  </style>
+</head>
+<body>
+  <h1>Arduino MKR 1010 and IMU shield</h1>
+  <p>First upload sketch to board with <a href="https://create.arduino.cc/editor/dpajak/e7af8e95-0aff-4ce1-b2f7-4e7b446c2577/preview" target=”_blank”>Arduino Create</a></p>
+
+  <div style="width:95%;height:100%;border-color: #333333;border-style: solid;border-width: 0.5;">
+    <div style="width:100%;height:30px;border-color: #333333;border-style: solid;border-width: 0.5;border-left:none;border-top:none;margin-top:5px;" id="status">
+      <button id="bigButton" ></button><div style="display: inline-block;margin-left: 10px" id="infoBar">Click to connect via Bluetooth LE</div>
+    </div stye="display: table;">
+    <div style="width:100%;height:200px;margin-top:20px;margin-bottom:5px;  margin: 0 auto;">
+      <div id="3d" style="float: left;height:200px;width: 20% "></div>
+      <div id="fft" style="float: left;height:200px;width: 0%"></div>
+      <div id="graph" style="float: left;height:200px;width: 75%"></div>
+    </div>
+    <div style="width:100%;height:200px;margin-top:20px;margin-bottom:5px;  margin: 0 auto;border-color: #333333;border-style: solid;border-width: 0.5;border-left:none;border-right:none;">
+      <div id="bottom" style="float: left;height:200px;width: 100% "></div>
+
+    </div>
+
+  </div>
+</body>
+<script type = 'text/javascript'>
+
+/*
+A Web Bluetooth connection example
+gathering three characteristics from a 3-axis accelerometer
+created 6 Aug 2018
+by Tom Igoe
+
+*/
+
+var frameBufferSize = 256;
+var sampleRate = 1000/30;
+var graphWindow = 128;
+var clock = 0;
+var signal = new Float32Array(frameBufferSize );
+var fft = {};
+fft.x = new FFT(frameBufferSize , sampleRate);
+fft.y = new FFT(frameBufferSize , sampleRate);
+fft.z = new FFT(frameBufferSize , sampleRate);
+var zx = [], zy = [], zz = [];
+// BLE device
+var myDevice;
+
+// Arduino IMU data array
+var graphData = {x: [], y: [], z:[]};
+for (i = 0; i < frameBufferSize; i++) {
+  graphData.x.push(0);
+  graphData.y.push(0);
+  graphData.z.push(0);
+}
+
+// fft bucket labels
+var xaxis = [];
+for (i = 0; i < frameBufferSize; i++) {
+  xaxis.push((i*sampleRate)/frameBufferSize+" Hz");
+
+}
+
+
+// 3D scene
+var renderer = new THREE.WebGLRenderer();
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(75, 1, 1, 10000);
+
+// fill your peripheral service and characteristic UUIDs here:
+const imuService = '917649a0-d98e-11e5-9eec-0002a5d5c51b';
+const imuChar = '917649a1-d98e-11e5-9eec-0002a5d5c51b';
+const bigButton = document.getElementById('bigButton');
+const infoBar= document.getElementById('infoBar');
+const colors = ["#FF355E","#FD5B78","#FF6037","#FF9966","#FF9933","#FFCC33","#FFFF66","#FFFF66","#CCFF00","#66FF66","#AAF0D1","#50BFE6","#FF6EFF","#EE34D2","#FF00CC","#FF00CC"];
+
+var calibrated = 0;
+
+if ("bluetooth" in navigator) {
+  bigButton.addEventListener('click', function(event) {
+    connect();
+  });
+  // else the browser doesn't support bluetooth
+} else {
+  status("browser not supported"); bigButton.style.backgroundColor = "red";
+  alert("Error: This browser doesn't support Web Bluetooth. Try using Chrome.");
+}
+
+function status(stat){
+  infoBar.innerHTML = stat;
+}
+
+// connect to the Bluetooth peripheral:
+function connect() {
+  navigator.bluetooth.requestDevice({filters: [{ services: [imuService] }]
+  }).then(function (device) {
+    myDevice = device;
+    status('Connecting to GATT server...'); return device.gatt.connect();
+  }).then(function (server) {
+    status('Getting service...'); return server.getPrimaryService(imuService);
+  }).then(function (service) {
+    status('Getting characteristics...'); return service.getCharacteristics();
+  }).then(function (characteristics) {
+    status('Subscribing...');
+    for (c in characteristics) {
+      characteristics[c].addEventListener('characteristicvaluechanged', handleData);
+      characteristics[c].startNotifications();
+    }
+    infoBar.innerHTML = "Connected"; bigButton.style.backgroundColor = "#00ffff";
+  })
+  .catch(function (error) {
+    // catch any errors:
+    console.error('Connection failed!', error);
+  });
+}
+
+// handle incoming data:
+function handleData(event) {
+  // get the data  from the peripheral:
+  var x = event.target.value.getFloat32(0,true); // true = byte order from Arduino is littleEndian
+  var y = event.target.value.getFloat32(4,true);
+  var z = event.target.value.getFloat32(8,true);
+
+  updateData(-x,y,-z); // NB need to invert to match sensor coordinate system to our 3d model
+}
+
+// disconnect function:
+function disconnect() {
+  if (myDevice) {
+    // disconnect:
+    myDevice.gatt.disconnect();
+  }
+}
+
+// Handle Arduino client input data
+function updateData(x,y,z) {
+
+  if (calibrated == 0){
+    // We assume initial position of physical device is as shown in 3D model before connection
+    lastX = x; lastY = y; lastZ = z;
+    calibrated = 1;
+
+  }
+
+
+
+  // FFT
+  // deinterleave and mix down to mono
+
+
+  var data = [];
+  fft.x.forward(graphData.x);
+  //zx.push(fft.x.spectrum.slice(1,frameBufferSize/2));
+  data.push({y: fft.x.spectrum.slice(2,frameBufferSize/2),name: 'x',type: 'bar',  fill: 'tonexty',        opacity: 0.7,     showlegend:false});
+
+  fft.y.forward(graphData.y);
+  //zy.push(fft.y.spectrum.slice(1,frameBufferSize/2));
+  data.push({y: fft.y.spectrum.slice(2,frameBufferSize/2),name: 'y',type: 'bar',    fill: 'toself',           opacity: 0.7,showlegend:false});
+
+  fft.z.forward(graphData.z);
+  //zz.push(fft.z.spectrum.slice(1,frameBufferSize/2));
+  data.push({y: fft.z.spectrum.slice(2,frameBufferSize/2),name: 'z',type: 'bar',    fill: 'tozeroy',           opacity: 0.7,showlegend:false});
+
+  //if (zx.length> frameBufferSize ) {zx.shift();zy.shift();zz.shift();}
+
+
+  //fft
+  if (clock == 1) {
+  Plotly.newPlot('graph', data, {
+  //  barmode: 'stack',
+    plot_bgcolor: '#000001',
+    paper_bgcolor: '#000001',
+    margin: {l:30,r:0,b:25,t:25},
+    color: colors[(i *2 )],
+    yaxis: {'showticklabels':false,'range': 100, 'autorange': "false"}}
+  );
+  clock=0;};
+  clock++;
+
+  /*
+  if (clock == 2) {
+    var data = [{z: zx, type: 'heatmap', "colorscale": "Blues", showscale:false}];
+  Plotly.newPlot('heatx', data,{
+    barmode: 'stack',
+    plot_bgcolor: '#000001',
+    paper_bgcolor: '#000001',
+    margin: {l:30,r:30,b:25,t:25},
+    yaxis: {'showticklabels':false,'range': 100, 'autorange': "false"}});
+  }
+
+ if (clock == 4) {
+    var data = [{z: zy, type: 'heatmap', 'reversescale':true,"colorscale": "Reds", showscale:false}];
+  Plotly.newPlot('heaty', data,{
+    barmode: 'stack',
+    plot_bgcolor: '#000001',
+    paper_bgcolor: '#000001',
+    margin: {l:30,r:30,b:25,t:25},
+    yaxis: {'showticklabels':false,'range': 100, 'autorange': "false"}});
+  }
+
+  if (clock == 6){
+
+    var data = [{z: zz, type: 'heatmap', "colorscale": "Greens", showscale:false}];
+  Plotly.newPlot('heatz', data,{
+    barmode: 'stack',
+    plot_bgcolor: '#000001',
+    paper_bgcolor: '#000001',
+    margin: {l:30,r:30,b:25,t:25},
+    yaxis: {'showticklabels':false,'range': 100, 'autorange': "false"}});
+    clock=0;
+};
+*/
+  //status("<font color='#00cc00'>{x:"+x+",y:"+y+","+"z:"+z+"}");
+  graphData.x.push(x);graphData.y.push(y);graphData.z.push(z);
+
+  // shift oldest sample to maintain frameBufferSize
+  if (graphData.x.length> frameBufferSize ) {graphData.x.shift();graphData.y.shift();graphData.z.shift();}
+  // Update graph
+  Plotly.update('bottom', {y: [graphData.x.slice(frameBufferSize-graphWindow,frameBufferSize),graphData.y.slice(frameBufferSize-graphWindow,frameBufferSize),graphData.z.slice(frameBufferSize-graphWindow,frameBufferSize)]});
+
+  // Update 3D model
+  arduinoModel.rotation.x = (x-lastX) * 0.0174533; // delta converted to radians
+  arduinoModel.rotation.y = (y-lastY) * 0.0174533;
+  arduinoModel.rotation.z = (z-lastZ) * 0.0174533;
+
+  renderer.render(scene, camera);
+}
+
+function initGraph(){
+  var traceData=[];
+  var properties = ["x","y","z"];
+  var i = 3;
+  properties.forEach(function(key) {
+    i++;
+    var trace = {
+      y: [],
+      mode: 'scatter',
+      opacity: 0.7,
+      //line: {color: colors[(i *2 )]},
+      name: key
+    //  showlegend:false,
+
+    };
+    traceData.push(trace);
+  });
+
+  Plotly.plot('bottom', traceData,
+  {
+    plot_bgcolor: '#000001',
+    paper_bgcolor: '#000001',
+    margin: {l:30,r:30,b:25,t:25},
+    color: '#000001',
+    'xaxis': {'range': [frameBufferSize], 'autorange': "true"}
+  });
+
+
+}
+
+function init3D(){
+
+  var container = document.getElementById( '3d' );
+  var loader = new THREE.GLTFLoader();
+
+  scene.background = new THREE.Color( 0x000000 );
+  renderer.setSize( 200, 200 );
+  renderer.setPixelRatio( 4 );
+  container.appendChild( renderer.domElement );
+
+  loader.load( 'libs/arduino.gltf',
+  // called when the Arduinio model is loaded
+  function ( gltf ) {
+    // Model
+    arduinoModel = gltf.scene;
+    scene.add(arduinoModel);
+
+    // Light
+    var light1 = new THREE.PointLight(0xc0f0ff, 9, 0);
+    light1.position.set(20, -1, 20);
+    scene.add(light1);
+    var directionalLight = new THREE.HemisphereLight( 0xffffbb, 0x002080, 1);
+    directionalLight.position.set(10,0,0);
+    scene.add( directionalLight );
+    var light = new THREE.AmbientLight( 0x111111 );
+    scene.add( light );
+
+
+
+    // Camera
+    camera.position.set (6,0,0);
+    camera.rotation.y = Math.PI; // 180
+    camera.lookAt(new THREE.Vector3(0,0.2,-1.2));
+    renderer.render(scene, camera);
+    animate();
+  }
+);
+};
+
+
+
+initGraph();
+init3D();
+
+
+// Animation
+function animate()
+{
+  var id = setInterval(frame, 30);
+  var tick = 200;
+  var tick2 = 0;
+  var tick3 = 0;
+
+  function frame(){
+    tick += 1;
+    if (tick>200+64) {tick2 += 2};
+    if (tick>200+128) {tick3 += 0.1};
+    var y = (Math.random()/2)+Math.sin(tick3)*3;
+    var x = (Math.random()/2)+Math.sin(3*Math.sin(tick2/1000)*tick2)*6;
+    var z =  (Math.random()/2)+Math.sin(Math.sin(tick/500)*tick/2)*5;
+    updateData(x,y,z);
+  }
+}
+
+</script>
+</html>
