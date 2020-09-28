@@ -27,7 +27,7 @@ Teletext frames are 40 * 25 characters of 6 * 10 pixels (240 * 250 per frame). B
 
 Each "character sized" region is compared against the levels of the chosen teletext character set to find the closest match. For increased resolution, regions are subdivided into tiles to do this - e.g. 6 sixels for mosaic graphics. Each tile is given an average greyscale value.
 
-We precalculate a lookup table of the closest teletext characters matches against every possible combination of image region greyscale values to speed-up real time conversion. Limiting ourselves to 8 discrete greyscale levels (3-bit color) we have a possible 2**18 combinations to precalculate, assuming 6 tiles per chracter.
+We precalculate a lookup table of the closest teletext characters matches against every possible combination of image region greyscale values to speed-up real time conversion. Limiting ourselves to 8 discrete greyscale levels (3-bit) we have a possible 2**18 combinations to precalculate, assuming 6 tiles per chracter.
 
 ~~~~~~
 
