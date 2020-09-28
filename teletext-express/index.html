@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teletext express - video converter</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+  <style>
+
+  body {
+    font-family: 'Roboto', sans-serif; color: #bbbbbb; background: black; font-size: small;
+  }
+
+  .button, button{
+    font: bold 14px Arial;
+    text-decoration: none;
+    background-color: #000000;
+    color: #bbbbbb;
+    padding: 2px 6px 2px 6px;
+    border: 1px solid #888888;
+  }
+
+  #bigButton {
+    background-color: aqua; border: none; color: black; padding: 1px; text-align: center;
+    text-decoration: none; font-size: 6px; margin: 12px 20px; height: 15px; width: 30px;
+    border-radius: 10%; outline:none; font-family: 'Roboto', sans-serif;
+  }
+
+  .container {
+    width:960px;height:384px;margin-top:30px;margin-bottom:7.5px;  margin: 0 auto;
+  }
+
+  .widget {
+    background: #222222;
+    //border: 1px solid #ff00ff;
+    border-radius: 0px;
+    padding: 12px;
+    margin: 6px;
+    float: left;
+  }
+
+  .status {
+    font-family: 'Comfortaa', cursive;
+    font-size: 32px;
+    background-size: 80px;
+    background-position: 98% 50%;
+    background-repeat: no-repeat;
+    width: 852px;  height: 36px;
+  }
+
+  .footer {
+    font-size: 24px;
+    background-size: 80px;
+    background-position: 98% 50%;
+    background-repeat: no-repeat;
+    width: 852px;  height: 36px;
+    display: inline;
+  }
+
+  .timeline {
+    width: 640px;  height: 16px;
+  }
+
+  .label {
+    height: 15px;
+    display: inline;
+    font-size: 15px;
+  }
+
+  .digit {
+    font-size: 30px;
+    color: #000000;
+    float: right;
+  }
+
+  .vid{
+    width: 240px;  height: 250px;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    background: black;
+
+  }
+
+  .sliders {
+    width: 240px;
+    position: relative;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .side {
+    width: 240px;  height: 500px;
+    position: relative;
+  }
+
+  .viewer{
+    width: 576px;  height: 500px;
+    position: relative;
+  }
+
+  .slider {
+    width: 256px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  video {
+    width: 240px;
+    height: 250px;
+    position: relative;
+  }
+
+  input {
+    margin : 0 auto;
+  }
+
+  .palette {
+    border: 2px outset black;
+    background-color: lightBlue;
+    height:12px;
+    width:24px;
+    cursor:pointer;
+  }
+
+  .palette:hover {
+    border: 2px outset white;
+  }
+
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="status widget">
+      <table width="100%">
+        <tr>
+          <td>teletext express <font color="#880000">beta</font></td>
+          <td>
+            <a href=”https://github.com/8bitkick/teletext-express/edit/master/README.md” class="button">More info</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="side widget">
+      <div class="vid widget" id="3d">
+        <video id="myVideo" controls><source src="video/fire.mp4" type="video/mp4"></video>
+        </div>
+        <div class="sliders widget">
+          <table width="100%">
+            <tr>
+              <td><label for="zoom">ratio</label></td>
+              <td><input type="range" min="1.2" max="2" value="1.2"
+                step="0.1" oninput="outputUpdate(value,'zoom')"></td>
+                <td><output for="zoom" id="zoom">1.2</output></td>
+              </tr>
+              <tr>
+                <td><label for="xOffset">offset</label></td>
+                <td><input type="range" min="-200" max="200" value="0"
+                  step="1" oninput="outputUpdate(value,'xOffset')"></td>
+                  <td><output for="xOffset" id="xOffset">0</output></td>
+                </tr>
+                <tr>
+                  <td width="25%"><label for="brightness">brightness</label></td>
+                  <td width="60%"><input type="range" min="0" max="100" value="50" width="300px"
+                    step="1" oninput="outputUpdate(value,'brightness')"></td>
+                    <td width="15%"><output for="brightness" id="brightness">50</output></td>
+                  </tr>
+                  <tr>
+                    <td><label for="contrast">contrast</label></td>
+                    <td><input type="range" min="0" max="100" value="50"
+                      step="1" oninput="outputUpdate(value,'contrast')"></td>
+                      <td><output for="contrast" id="contrast">50</output></td>
+                    </tr>
+                    <tr>
+                      <td><label for="framerate">framerate</label></td>
+                      <td><input type="range" min="1" max="50" value="25"
+                        oninput="outputUpdate(value,'framerate')"></td>
+                        <td><output for="framerate" id="framerate">25</output></td>
+                      </tr>
+                    </table>
+                    <br>
+                    <div>
+                      <input class="palette" type="button" id="fg0"/>
+                      <input class="palette" type="button" id="fg1"/>
+                      <input class="palette" type="button" id="fg2"/>
+                      <input class="palette" type="button" id="fg3"/>
+                      <input class="palette" type="button" id="fg4"/>
+                      <input class="palette" type="button" id="fg5"/>
+                      <input class="palette" type="button" id="fg6"/>
+                      <input class="palette" type="button" id="fg7"/>
+                    </div>
+                    <div>
+                      <input class="palette" type="button" id="bg0"/>
+                      <input class="palette" type="button" id="bg1"/>
+                      <input class="palette" type="button" id="bg2"/>
+                      <input class="palette" type="button" id="bg3"/>
+                      <input class="palette" type="button" id="bg4"/>
+                      <input class="palette" type="button" id="bg5"/>
+                      <input class="palette" type="button" id="bg6"/>
+                      <input class="palette" type="button" id="bg7"/>
+                    </div>
+                    <br>
+                    <label for="chars">encoding</label>
+                    <select name="chars" id="chars" onchange="encodingChange(value)">
+                      <option value="0">Graphics (hi)</option>
+                      <option value="1">Graphics & text (hi)</option>
+                      <option value="2">Graphics & text (lo)</option>
+                      <option value="3">Text only</option>
+                      <option value="4">Char blocks</option>
+                    </select>
+                    <br><br>
+                    <table width="100%"><tr>
+                      <td><input type="checkbox" name="invert" onChange="updateInvert(this.checked);">
+                        <label for="invert">invert</label><br></td>
+                      </tr></table>
+                    </div>
+                  </div>
+                  <div class="viewer widget">
+                    <canvas id="myCanvas" width="576" height="500"></canvas>
+                  </div>
+                  <div class="footer widget">
+                    <table>
+                      <tr>
+                        <td>
+                          <input type="file" id="vidSelect" accept="video/*|image/*"/>
+                        </td>
+                        <td>
+                          <button onclick="record()" id="record">Record</button>
+                        </td>
+                        <td>
+                          <button onclick="resetBuffer()">Wipe</button>
+                        </td>
+                        <td>
+                          <a id="download-link" download="teletext-frame.bin" href=”” class="button">Download</a>
+                        </td>
+                        <td>
+                          <form action="" id="snapshot" method="get" target="_new">
+                            <button type="submit">Edit Frame</button>
+                          </form>
+                        </td>
+                        <td align="right"><canvas id="timeline" width="240" height="20"></canvas>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </body>
+            <script src='screensaver.js'></script>
+            <script src='image-process.js'></script>
+            <script src='lookup-table.js'></script>
+            <script src='characters.js'></script>
+            <script src='main.js'></script>
+            <script type="text/javascript">
+            </script>
+            </html>
