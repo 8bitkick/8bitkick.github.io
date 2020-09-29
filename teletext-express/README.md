@@ -67,7 +67,7 @@ The control characters are retrospectively applied to the beginning of each line
 
 ### Thanks
 
-Thanks to Kieran & Simon of Bitshifters for the BBC Micro mode 7 [Bad Apple demo](https://bitshifters.github.io/posts/prods/bs-badapple.html) which inspired me to hack together a mode 7 [Rick Roll](https://twitter.com/bbcmicrobot/status/1304667551268401152?s=20) in the first place, to Rheolism for the inpired idea to use avaliable alpha characters with graphics, to ZX guesser and Teletext Archeologist for their technical insights and encoragement to actually make this a tool people can use. Finally thanks to the bbcmicrobot crew for constant creativity and awesomeness
+Thanks to Kieran & Simon of Bitshifters for the BBC Micro mode 7 [Bad Apple demo](https://bitshifters.github.io/posts/prods/bs-badapple.html) which inspired me to hack together a mode 7 [Rick Roll](https://twitter.com/bbcmicrobot/status/1304667551268401152?s=20) in the first place, to Rheolism for the inspired idea to use avaliable alpha characters with graphics, to ZX guesser and Teletext Archeologist for their technical insights and encoragement to actually make this a tool people can use. Finally thanks to the bbcmicrobot crew for constant creativity and awesomeness
 
 
 
