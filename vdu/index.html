@@ -5,280 +5,280 @@
   body{  margin: 32px;font-family: Arial, Helvetica, sans-serif;}
 
   input, pre{
-  background:#ddd;
-  padding: 16px;
+    background:#ddd;
+    padding: 16px;
   }
 
-  </style>
+</style>
 <body>
-<h1>BBC BASIC VDU string generator</h1>
-<p>This page takes a comma separated list of numbers and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a>. You can contribute to the <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/vdu">source for this page</a> on github.</p>
-<h2>Enter VDU code</h2>
-<input id="code" onchange="main" size="100"></input>
-<h2>PRINT string equivalent</h2>
-<pre id="output"></pre>
-<a href="" id="owlet" target="_blank">Open this code on bbcmic.ro</a>
+  <h1>BBC BASIC VDU string generator</h1>
+  <p>This page takes a comma separated list of numbers and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a></p>
+  <h2>Enter VDU code</h2>
+  <input id="code" size="100"></input>
+  <h2>PRINT string equivalent</h2>
+  <pre id="output"></pre>
+  <a href="" id="owlet" target="_blank">Open this code on bbcmic.ro</a>
 
-<h2>VDU code summary</h2>
-<a href="https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html">Source: https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html</a>
-<p></p><table border="1">
-<tr><th align="left" width="12"><strong><tt>Decimal</tt></strong>
-</th><th width="16"><strong><tt>Hex</tt></strong>
-</th><th width="7"><strong><tt>CTRL</tt></strong>
-</th><th width="25"><strong><tt>ASCII abbrev.</tt></strong>
-</th><th width="7"><strong><tt>Bytes extra</tt></strong>
-</th><th width="200"><strong><tt>Meaning</tt></strong>
-</th></tr><tr><td align="right">0
-</td><td align="right">0
-</td><td align="right">@
-</td><td align="right">NUL
-</td><td>0
-</td><td>does nothing
-</td></tr><tr><td align="right">1
-</td><td align="right">1
-</td><td align="right">A
-</td><td align="right">SOH
-</td><td>1
-</td><td>send next character to printer only
-</td></tr><tr><td align="right">2
-</td><td align="right">2
-</td><td align="right">B
-</td><td align="right">STX
-</td><td>0
-</td><td>enable printer
-</td></tr><tr><td align="right">3
-</td><td align="right">3
-</td><td align="right">C
-</td><td align="right">ETX
-</td><td>0
-</td><td>disable printer
-</td></tr><tr><td align="right">4
-</td><td align="right">4
-</td><td align="right">D
-</td><td align="right">EOT
-</td><td>0
-</td><td>write text at text cursor
-</td></tr><tr><td align="right">5
-</td><td align="right">5
-</td><td align="right">E
-</td><td align="right">ENQ
-</td><td>0
-</td><td>write text at graphics cursor
-</td></tr><tr><td align="right">6
-</td><td align="right">6
-</td><td align="right">F
-</td><td align="right">ACK
-</td><td>0
-</td><td>enable VDU drivers
-</td></tr><tr><td align="right">7
-</td><td align="right">7
-</td><td align="right">G
-</td><td align="right">BEL
-</td><td>0
-</td><td>make a short beep
-</td></tr><tr><td align="right">8
-</td><td align="right">8
-</td><td align="right">H
-</td><td align="right">BS
-</td><td>0
-</td><td>backspace cursor one character
-</td></tr><tr><td align="right">9
-</td><td align="right">9
-</td><td align="right">I
-</td><td align="right">HT
-</td><td>0
-</td><td>forwardspace cursor one character
-</td></tr><tr><td align="right">10
-</td><td align="right">A
-</td><td align="right">J
-</td><td align="right">LF
-</td><td>0
-</td><td>move cursor down one line
-</td></tr><tr><td align="right">11
-</td><td align="right">B
-</td><td align="right">K
-</td><td align="right">VT
-</td><td>0
-</td><td>move cursor up one line
-</td></tr><tr><td align="right">12
-</td><td align="right">C
-</td><td align="right">L
-</td><td align="right">FF
-</td><td>0
-</td><td>clear text area
-</td></tr><tr><td align="right">13
-</td><td align="right">D
-</td><td align="right">M
-</td><td align="right">CR
-</td><td>0
-</td><td>move cursor to start of current line
-</td></tr><tr><td align="right">14
-</td><td align="right">E
-</td><td align="right">N
-</td><td align="right">SO
-</td><td>0
-</td><td>page mode on
-</td></tr><tr><td align="right">15
-</td><td align="right">F
-</td><td align="right">O
-</td><td align="right">SI
-</td><td>0
-</td><td>page mode off
-</td></tr><tr><td align="right">16
-</td><td align="right">10
-</td><td align="right">P
-</td><td align="right">DLE
-</td><td>0
-</td><td>clear graphics area
-</td></tr><tr><td align="right">17
-</td><td align="right">11
-</td><td align="right">Q
-</td><td align="right">DC1
-</td><td>1
-</td><td>define text colour
-</td></tr><tr><td align="right">18
-</td><td align="right">12
-</td><td align="right">R
-</td><td align="right">DC2
-</td><td>2
-</td><td>define graphics colour
-</td></tr><tr><td align="right">19
-</td><td align="right">13
-</td><td align="right">S
-</td><td align="right">DC3
-</td><td>5
-</td><td>define logical colour
-</td></tr><tr><td align="right">20
-</td><td align="right">14
-</td><td align="right">T
-</td><td align="right">DC4
-</td><td>0
-</td><td>restore default logical colours
-</td></tr><tr><td align="right">21
-</td><td align="right">15
-</td><td align="right">U
-</td><td align="right">NAK
-</td><td>0
-</td><td>disable VDU drivers or delete current line
-</td></tr><tr><td align="right">22
-</td><td align="right">16
-</td><td align="right">V
-</td><td align="right">SYN
-</td><td>1
-</td><td>select screen mode
-</td></tr><tr><td align="right">23
-</td><td align="right">17
-</td><td align="right">W
-</td><td align="right">ETB
-</td><td>9
-</td><td>re-program display character
-</td></tr><tr><td align="right">24
-</td><td align="right">18
-</td><td align="right">X
-</td><td align="right">CAN
-</td><td>8
-</td><td>define graphics window
-</td></tr><tr><td align="right">25
-</td><td align="right">19
-</td><td align="right">Y
-</td><td align="right">EM
-</td><td>5
-</td><td><strong>PLOT K,x,y</strong>
-</td></tr><tr><td align="right">26
-</td><td align="right">1A
-</td><td align="right">Z
-</td><td align="right">SUB
-</td><td>0
-</td><td>restore default windows
-</td></tr><tr><td align="right">27
-</td><td align="right">1B
-</td><td align="right">[
-</td><td align="right">ESC
-</td><td>0
-</td><td>does nothing
-</td></tr><tr><td align="right">28
-</td><td align="right">1C
-</td><td align="right">\
-</td><td align="right">FS
-</td><td>4
-</td><td>define text window
-</td></tr><tr><td align="right">29
-</td><td align="right">1D
-</td><td align="right">]
-</td><td align="right">GS
-</td><td>4
-</td><td>define graphics origin
-</td></tr><tr><td align="right">30
-</td><td align="right">1E
-</td><td align="right">^
-</td><td align="right">RS
-</td><td>0
-</td><td>home text cursor to top left
-</td></tr><tr><td align="right">31
-</td><td align="right">1F
-</td><td align="right">_
-</td><td align="right">US
-</td><td>2
-</td><td>move text cursor to x,y
-</td></tr><tr><td align="right">127
-</td><td align="right">7F
-</td><td align="right"><em>none</em>
-</td><td align="right">DEL
-</td><td>0
-</td><td>Backspace and delete
-</td></tr></table>
-<script>
-// Javascript code to generate BBC BASIC VDU strings
-// Based on https://gist.github.com/pmalin/6928c11309c8c92c5372f7f8c3fc3cc2
+  <h2>VDU code summary</h2>
+  <a href="https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html">Source: https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html</a>
+  <p></p><table border="1">
+    <tr><th align="left" width="12"><strong><tt>Decimal</tt></strong>
+    </th><th width="16"><strong><tt>Hex</tt></strong>
+    </th><th width="7"><strong><tt>CTRL</tt></strong>
+    </th><th width="25"><strong><tt>ASCII abbrev.</tt></strong>
+    </th><th width="7"><strong><tt>Bytes extra</tt></strong>
+    </th><th width="200"><strong><tt>Meaning</tt></strong>
+    </th></tr><tr><td align="right">0
+    </td><td align="right">0
+    </td><td align="right">@
+    </td><td align="right">NUL
+    </td><td>0
+    </td><td>does nothing
+    </td></tr><tr><td align="right">1
+    </td><td align="right">1
+    </td><td align="right">A
+    </td><td align="right">SOH
+    </td><td>1
+    </td><td>send next character to printer only
+    </td></tr><tr><td align="right">2
+    </td><td align="right">2
+    </td><td align="right">B
+    </td><td align="right">STX
+    </td><td>0
+    </td><td>enable printer
+    </td></tr><tr><td align="right">3
+    </td><td align="right">3
+    </td><td align="right">C
+    </td><td align="right">ETX
+    </td><td>0
+    </td><td>disable printer
+    </td></tr><tr><td align="right">4
+    </td><td align="right">4
+    </td><td align="right">D
+    </td><td align="right">EOT
+    </td><td>0
+    </td><td>write text at text cursor
+    </td></tr><tr><td align="right">5
+    </td><td align="right">5
+    </td><td align="right">E
+    </td><td align="right">ENQ
+    </td><td>0
+    </td><td>write text at graphics cursor
+    </td></tr><tr><td align="right">6
+    </td><td align="right">6
+    </td><td align="right">F
+    </td><td align="right">ACK
+    </td><td>0
+    </td><td>enable VDU drivers
+    </td></tr><tr><td align="right">7
+    </td><td align="right">7
+    </td><td align="right">G
+    </td><td align="right">BEL
+    </td><td>0
+    </td><td>make a short beep
+    </td></tr><tr><td align="right">8
+    </td><td align="right">8
+    </td><td align="right">H
+    </td><td align="right">BS
+    </td><td>0
+    </td><td>backspace cursor one character
+    </td></tr><tr><td align="right">9
+    </td><td align="right">9
+    </td><td align="right">I
+    </td><td align="right">HT
+    </td><td>0
+    </td><td>forwardspace cursor one character
+    </td></tr><tr><td align="right">10
+    </td><td align="right">A
+    </td><td align="right">J
+    </td><td align="right">LF
+    </td><td>0
+    </td><td>move cursor down one line
+    </td></tr><tr><td align="right">11
+    </td><td align="right">B
+    </td><td align="right">K
+    </td><td align="right">VT
+    </td><td>0
+    </td><td>move cursor up one line
+    </td></tr><tr><td align="right">12
+    </td><td align="right">C
+    </td><td align="right">L
+    </td><td align="right">FF
+    </td><td>0
+    </td><td>clear text area
+    </td></tr><tr><td align="right">13
+    </td><td align="right">D
+    </td><td align="right">M
+    </td><td align="right">CR
+    </td><td>0
+    </td><td>move cursor to start of current line
+    </td></tr><tr><td align="right">14
+    </td><td align="right">E
+    </td><td align="right">N
+    </td><td align="right">SO
+    </td><td>0
+    </td><td>page mode on
+    </td></tr><tr><td align="right">15
+    </td><td align="right">F
+    </td><td align="right">O
+    </td><td align="right">SI
+    </td><td>0
+    </td><td>page mode off
+    </td></tr><tr><td align="right">16
+    </td><td align="right">10
+    </td><td align="right">P
+    </td><td align="right">DLE
+    </td><td>0
+    </td><td>clear graphics area
+    </td></tr><tr><td align="right">17
+    </td><td align="right">11
+    </td><td align="right">Q
+    </td><td align="right">DC1
+    </td><td>1
+    </td><td>define text colour
+    </td></tr><tr><td align="right">18
+    </td><td align="right">12
+    </td><td align="right">R
+    </td><td align="right">DC2
+    </td><td>2
+    </td><td>define graphics colour
+    </td></tr><tr><td align="right">19
+    </td><td align="right">13
+    </td><td align="right">S
+    </td><td align="right">DC3
+    </td><td>5
+    </td><td>define logical colour
+    </td></tr><tr><td align="right">20
+    </td><td align="right">14
+    </td><td align="right">T
+    </td><td align="right">DC4
+    </td><td>0
+    </td><td>restore default logical colours
+    </td></tr><tr><td align="right">21
+    </td><td align="right">15
+    </td><td align="right">U
+    </td><td align="right">NAK
+    </td><td>0
+    </td><td>disable VDU drivers or delete current line
+    </td></tr><tr><td align="right">22
+    </td><td align="right">16
+    </td><td align="right">V
+    </td><td align="right">SYN
+    </td><td>1
+    </td><td>select screen mode
+    </td></tr><tr><td align="right">23
+    </td><td align="right">17
+    </td><td align="right">W
+    </td><td align="right">ETB
+    </td><td>9
+    </td><td>re-program display character
+    </td></tr><tr><td align="right">24
+    </td><td align="right">18
+    </td><td align="right">X
+    </td><td align="right">CAN
+    </td><td>8
+    </td><td>define graphics window
+    </td></tr><tr><td align="right">25
+    </td><td align="right">19
+    </td><td align="right">Y
+    </td><td align="right">EM
+    </td><td>5
+    </td><td><strong>PLOT K,x,y</strong>
+    </td></tr><tr><td align="right">26
+    </td><td align="right">1A
+    </td><td align="right">Z
+    </td><td align="right">SUB
+    </td><td>0
+    </td><td>restore default windows
+    </td></tr><tr><td align="right">27
+    </td><td align="right">1B
+    </td><td align="right">[
+    </td><td align="right">ESC
+    </td><td>0
+    </td><td>does nothing
+    </td></tr><tr><td align="right">28
+    </td><td align="right">1C
+    </td><td align="right">\
+    </td><td align="right">FS
+    </td><td>4
+    </td><td>define text window
+    </td></tr><tr><td align="right">29
+    </td><td align="right">1D
+    </td><td align="right">]
+    </td><td align="right">GS
+    </td><td>4
+    </td><td>define graphics origin
+    </td></tr><tr><td align="right">30
+    </td><td align="right">1E
+    </td><td align="right">^
+    </td><td align="right">RS
+    </td><td>0
+    </td><td>home text cursor to top left
+    </td></tr><tr><td align="right">31
+    </td><td align="right">1F
+    </td><td align="right">_
+    </td><td align="right">US
+    </td><td>2
+    </td><td>move text cursor to x,y
+    </td></tr><tr><td align="right">127
+    </td><td align="right">7F
+    </td><td align="right"><em>none</em>
+    </td><td align="right">DEL
+    </td><td>0
+    </td><td>Backspace and delete
+    </td></tr></table>
+    <script>
+    // Javascript code to generate BBC BASIC VDU strings
+    // Based on https://gist.github.com/pmalin/6928c11309c8c92c5372f7f8c3fc3cc2
 
-let vdu= [
-17,131, // COLOUR 131
-12, // CLS
-19, 3, 7, 0, 0, 0, // Set palette COL 3=7 (white)
-19, 2, 6, 0, 0, 0, // Set palette COL 2=6 (cyan)
-19, 1, 4, 0, 0, 0, // Set palette COL 1=4 (blue)
-5, // graphics text, cursor off
-29, // Set graphics origin
-640,512 // Coordinates
-];
+    let vdu= [
+      17,131, // COLOUR 131
+      12, // CLS
+      19, 3, 7, 0, 0, 0, // Set palette COL 3=7 (white)
+      19, 2, 6, 0, 0, 0, // Set palette COL 2=6 (cyan)
+      19, 1, 4, 0, 0, 0, // Set palette COL 1=4 (blue)
+      5, // graphics text, cursor off
+      29, // Set graphics origin
+      640,512 // Coordinates
+    ];
 
-let out = "";
+    let out = "";
 
-function safeChar(n){
-  return String.fromCharCode((n < 32 || n > 126) ? n+256 : n);
-}
+    function safeChar(n){
+      return String.fromCharCode((n < 32 || n > 126) ? n+256 : n);
+    }
 
-function processNumber(n){
-  n = parseInt(n,10)
-  if (n==13) {out += '[WARN: 13 cannot be encoded]';}
-  if (n==34) {out += safeChar(n);} // escape "
-  out += safeChar(n);
-}
+    function processNumber(n){
+      n = parseInt(n,10)
+      if (n==13) {out += '[WARN: 13 cannot be encoded]';}
+      if (n==34) {out += safeChar(n);} // escape "
+      out += safeChar(n);
+    }
 
-function splitWords(n){
-if (n<256) return n;
-return `${n & 0xFF},${n >> 8}`;
-}
+    function splitWords(n){
+      if (n<256) return n;
+      return `${n & 0xFF},${n >> 8}`;
+    }
 
-function updateHTML(){
-let prog = encodeURI(JSON.stringify({v:1,program:'MODE1\nPRINT"'+out+'"'}));
-document.getElementById("code").innerHTML="VDU "+vdu.join(',');
-document.getElementById("output").innerHTML=`PRINT"${out}"`;
-document.getElementById("owlet").setAttribute("href","https://bbcmic.ro/#"+prog);
-}
+    function updateHTML(){
+      let prog = encodeURI(JSON.stringify({v:1,program:'MODE1\nPRINT"'+out+'"'}));
+      document.getElementById("code").innerHTML="VDU "+vdu.join(',');
+      document.getElementById("output").innerHTML=`PRINT"${out}"`;
+      document.getElementById("owlet").setAttribute("href","https://bbcmic.ro/#"+prog);
+    }
 
-function main(){
-  out ="";
-  let vdu = document.getElementById("code").value.split(",");
-  console.log(vdu)
-vdu = vdu.map(splitWords).join(",").split(",");
-console.log(vdu)
-vdu.forEach(k => {processNumber(k)});
-updateHTML();
-}
+    function main(e){
+      out ="";
+      let vdu = document.getElementById("code").value.split(",");
+      console.log(vdu)
+      vdu = vdu.map(splitWords).join(",").split(",");
+      console.log(vdu)
+      vdu.forEach(k => {processNumber(k)});
+      updateHTML();
+    }
 
-document.getElementById("code").addEventListener("change", main);
+    document.getElementById("code").addEventListener("keyup", main);
 
-</script>
+  </script>
 </body>
 </html>
