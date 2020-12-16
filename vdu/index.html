@@ -20,220 +20,137 @@
 <body>
   <h1>BBC BASIC VDU string generator</h1>
   <p>This page takes a comma separated list of numbers and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a>. You can find <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/vdu">source for this page</a> on Github</p>
-  <h2>Enter VDU code</h2>
-  <input id="code" size="100"></input>
+  <h2>VDU code</h2>
+  <input id="vdu_code" size="100"></input>
   <h2>PRINT string equivalent</h2>
-  <pre id="output"></pre>
+  <pre id="output" size="100"></pre>
   <a href="" id="owlet" target="_blank">Open this code on bbcmic.ro</a>
 
   <h2>VDU code summary</h2>
-  <a href="https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html">Source: https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html</a>
-  <p></p><table id="lookup" border="1">
-    <tr><th align="left" width="12"><strong><tt>Decimal</tt></strong>
-    </th><th width="16"><strong><tt>Hex</tt></strong>
-    </th><th width="7"><strong><tt>CTRL</tt></strong>
-    </th><th width="25"><strong><tt>ASCII abbrev.</tt></strong>
-    </th><th width="7"><strong><tt>Bytes extra</tt></strong>
-    </th><th width="200"><strong><tt>Meaning</tt></strong>
-    </th></tr><tr><td>0
-    </td><td>0
-    </td><td>@
-    </td><td>NUL
-    </td><td>0
-    </td><td>does nothing
-    </td></tr><tr><td>1
-    </td><td>1
-    </td><td>A
-    </td><td>SOH
-    </td><td>1
-    </td><td>send next character to printer only
-    </td></tr><tr><td>2
-    </td><td>2
-    </td><td>B
-    </td><td>STX
-    </td><td>0
-    </td><td>enable printer
-    </td></tr><tr><td>3
-    </td><td>3
-    </td><td>C
-    </td><td>ETX
-    </td><td>0
-    </td><td>disable printer
-    </td></tr><tr><td>4
-    </td><td>4
-    </td><td>D
-    </td><td>EOT
-    </td><td>0
-    </td><td>write text at text cursor
-    </td></tr><tr><td>5
-    </td><td>5
-    </td><td>E
-    </td><td>ENQ
-    </td><td>0
-    </td><td>write text at graphics cursor
-    </td></tr><tr><td>6
-    </td><td>6
-    </td><td>F
-    </td><td>ACK
-    </td><td>0
-    </td><td>enable VDU drivers
-    </td></tr><tr><td>7
-    </td><td>7
-    </td><td>G
-    </td><td>BEL
-    </td><td>0
-    </td><td>make a short beep
-    </td></tr><tr><td>8
-    </td><td>8
-    </td><td>H
-    </td><td>BS
-    </td><td>0
-    </td><td>backspace cursor one character
-    </td></tr><tr><td>9
-    </td><td>9
-    </td><td>I
-    </td><td>HT
-    </td><td>0
-    </td><td>forwardspace cursor one character
-    </td></tr><tr><td>10
-    </td><td>A
-    </td><td>J
-    </td><td>LF
-    </td><td>0
-    </td><td>move cursor down one line
-    </td></tr><tr><td>11
-    </td><td>B
-    </td><td>K
-    </td><td>VT
-    </td><td>0
-    </td><td>move cursor up one line
-    </td></tr><tr><td>12
-    </td><td>C
-    </td><td>L
-    </td><td>FF
-    </td><td>0
-    </td><td>clear text area
-    </td></tr><tr><td>13
-    </td><td>D
-    </td><td>M
-    </td><td>CR
-    </td><td>0
-    </td><td>move cursor to start of current line
-    </td></tr><tr><td>14
-    </td><td>E
-    </td><td>N
-    </td><td>SO
-    </td><td>0
-    </td><td>page mode on
-    </td></tr><tr><td>15
-    </td><td>F
-    </td><td>O
-    </td><td>SI
-    </td><td>0
-    </td><td>page mode off
-    </td></tr><tr><td>16
-    </td><td>10
-    </td><td>P
-    </td><td>DLE
-    </td><td>0
-    </td><td>clear graphics area
-    </td></tr><tr><td>17
-    </td><td>11
-    </td><td>Q
-    </td><td>DC1
-    </td><td>1
-    </td><td>define text colour
-    </td></tr><tr><td>18
-    </td><td>12
-    </td><td>R
-    </td><td>DC2
-    </td><td>2
-    </td><td>define graphics colour
-    </td></tr><tr><td>19
-    </td><td>13
-    </td><td>S
-    </td><td>DC3
-    </td><td>5
-    </td><td>define logical colour
-    </td></tr><tr><td>20
-    </td><td>14
-    </td><td>T
-    </td><td>DC4
-    </td><td>0
-    </td><td>restore default logical colours
-    </td></tr><tr><td>21
-    </td><td>15
-    </td><td>U
-    </td><td>NAK
-    </td><td>0
-    </td><td>disable VDU drivers or delete current line
-    </td></tr><tr><td>22
-    </td><td>16
-    </td><td>V
-    </td><td>SYN
-    </td><td>1
-    </td><td>select screen mode
-    </td></tr><tr><td>23
-    </td><td>17
-    </td><td>W
-    </td><td>ETB
-    </td><td>9
-    </td><td>re-program display character
-    </td></tr><tr><td>24
-    </td><td>18
-    </td><td>X
-    </td><td>CAN
-    </td><td>8
-    </td><td>define graphics window
-    </td></tr><tr><td>25
-    </td><td>19
-    </td><td>Y
-    </td><td>EM
-    </td><td>5
-    </td><td><strong>PLOT K,x,y</strong>
-    </td></tr><tr><td>26
-    </td><td>1A
-    </td><td>Z
-    </td><td>SUB
-    </td><td>0
-    </td><td>restore default windows
-    </td></tr><tr><td>27
-    </td><td>1B
-    </td><td>[
-    </td><td>ESC
-    </td><td>0
-    </td><td>does nothing
-    </td></tr><tr><td>28
-    </td><td>1C
-    </td><td>\
-    </td><td>FS
-    </td><td>4
-    </td><td>define text window
-    </td></tr><tr><td>29
-    </td><td>1D
-    </td><td>]
-    </td><td>GS
-    </td><td>4
-    </td><td>define graphics origin
-    </td></tr><tr><td>30
-    </td><td>1E
-    </td><td>^
-    </td><td>RS
-    </td><td>0
-    </td><td>home text cursor to top left
-    </td></tr><tr><td>31
-    </td><td>1F
-    </td><td>_
-    </td><td>US
-    </td><td>2
-    </td><td>move text cursor to x,y
-    </td></tr><tr><td>127
-    </td><td>7F
-    </td><td><em>none</em>
-    </td><td>DEL
-    </td><td>0
-    </td><td>Backspace and delete
-    </td></tr></table>
+  <pre>
+  #   Bytes  Meaning
+  0     0    does nothing
+  1     1    send next character to printer only
+  2     0    enable printer
+  3     0    disable printer
+  4     0    write text at text cursor
+  5     0    write text at graphics cursor
+  6     0    enable VDU drivers
+  7     0    make a short beep
+  8     0    backspace cursor one character
+  9     0    forwardspace cursor one character
+  10    0    move cursor down one line
+  11    0    move cursor up one line
+  12    0    clear text area
+  13    0    move cursor to start of current line
+  14    0    page mode on
+  15    0    page mode off
+  16    0    clear graphics area
+  17    1    define text colour
+  18    2    define graphics colour
+  19    5    define logical colour
+  20    0    restore default logical colours
+  21    0    disable VDU drivers or delete current line
+  22    1    select screen mode
+  23    9    re-program display character
+  24    8    define graphics window
+  25    5    PLOT K,x,y (see next table)
+  26    0    restore default windows
+  27    0    does nothing
+  28    4    define text window
+  29    4    define graphics origin
+  30    0    home text cursor to top left
+  31    2    move text cursor to x,y
+  127   0    Backspace and delete
+</pre>
+
+    <h2>PLOT codes</h2>
+    <pre>
+
+The complete list of PLOT codes available with OS 1.20 and the Graphics
+Extension ROM is as follows:
+
+Plot code  Effect
+&00-&07    Solid line, includes both ends
+&08-&0F    Solid line, final point omitted
+&10-&17    Dot-dash line, includes both ends, pattern restarted
+&18-&1F    Dot-dash line, first point omitted, pattern restarted
+&20-&27    Solid line, first point omitted
+&28-&2F    Solid line, both points omitted
+&30-&37    Dot-dash line, initial point omitted, pattern continued
+&38-&3F    Dot-dash line, both ends omitted, pattern continued
+&40-&47    Point plot
+&48-&4F    Line fill left and right to non-background
+&50-&57    Triangle fill
+&58-&5F    Line fill right to background
+&60-&67    Rectangle fill
+&68-&6F    Line fill left and right to foreground
+&70-&77    Parallelogram fill
+&78-&7F    Line fill right to non-foreground
+&80-&87    Flood until non-background
+&88-&8F    Flood until foreground
+&90-&97    Circle outline
+&98-&9F    Circle fill
+&A0-&A7    Circular arc
+&A8-&AF    Circular segment
+&B0-&B7    Circular sector
+&B8-&BF    Rectangle copy/move
+&B8        Move relative
+&B9        Relative rectangle move
+&BA/&BB    Relative rectangle copy
+&BC        Move absolute
+&BD        Absolute rectangle move
+&BE/&BF    Absolute rectangle copy
+&C0-&C7    Ellipse outline
+&C8-&CF    Ellipse fill
+&D0-&D7
+&D8-&DF
+&E0-&E7
+&E8-&EF    Sprite plot
+&F0-&F7
+&F8-&FF
+
+Within each group of eight PLOT codes the effects are as follows:
+
+Plot code  Effect
+   0       move relative
+   1       plot relative in current foreground colour
+   2       plot relative in logical inverse colour
+   3       plot relative in current background colour
+   4       move absolute
+   5       plot absolute in current foreground colour
+   6       plot absolute in logical inverse colour
+   7       plot absolute in current background colour
+
+</pre>
+<h2>VDU 23 codes</h2>
+<pre>
+
+The effects of the various VDU 23 parameters are as follows:
+
+VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
+
+   n        Effect
+   0        6845 control
+   1        Cursor control
+   2        Colour pattern 1 (plot with GCOL 16,c)
+   3        Colour pattern 2 (plot with GCOL 32,c)
+   4        Colour pattern 3 (plot with GCOL 48,c)
+   5        Colour pattern 4 (plot with GCOL 64,c)
+   6        Dot-dash pattern (set length with *FX 163,242)
+
+  11        Set default colour patterns
+  12        Simple pattern 1 (plot with GCOL 16,c)
+  13        Simple pattern 2 (plot with GCOL 32,c)
+  14        Simple pattern 3 (plot with GCOL 48,c)
+  15        Simple pattern 4 (plot with GCOL 64,c)
+
+  27        Select/pick up sprite
+  27,0      Select sprite
+  27,1      Pick up sprite
+  </pre>
+    <a href="https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html">Source: https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html</a>
+    <a href="http://mdfs.net/Docs/Books/Manuals/AcornGXR.txt">http://mdfs.net/Docs/Books/Manuals/AcornGXR.txt</a>
     <script>
     // Javascript code to generate BBC BASIC VDU strings
     // Based on https://gist.github.com/pmalin/6928c11309c8c92c5372f7f8c3fc3cc2
@@ -269,14 +186,14 @@
 
     function updateHTML(){
       let prog = encodeURI(JSON.stringify({v:1,program:'MODE1\nPRINT"'+out+'"'}));
-      document.getElementById("code").innerHTML="VDU "+vdu.join(',');
+      document.getElementById("vdu_code").innerHTML="VDU "+vdu.join(',');
       document.getElementById("output").innerHTML=`PRINT"${out}"`;
       document.getElementById("owlet").setAttribute("href","https://bbcmic.ro/#"+prog);
     }
 
-    function main(e){
+    function vduToString(){
       out ="";
-      let vdu = document.getElementById("code").value.split(",");
+      let vdu = document.getElementById("vdu_code").value.split(",");
       console.log(vdu)
       vdu = vdu.map(splitWords).join(",").split(",");
       console.log(vdu)
@@ -284,7 +201,7 @@
       updateHTML();
     }
 
-    document.getElementById("code").addEventListener("keyup", main);
+    document.getElementById("vdu_code").addEventListener("keyup", vduToString);
 
     </script>
   </body>
