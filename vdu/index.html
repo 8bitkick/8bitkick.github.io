@@ -9,6 +9,13 @@
     padding: 16px;
   }
 
+  #lookup tr td:nth-child(2), #lookup th:nth-child(2),
+  #lookup tr td:nth-child(3), #lookup th:nth-child(3),
+  #lookup tr td:nth-child(4), #lookup th:nth-child(4)
+  {
+    display: none;
+  }
+
 </style>
 <body>
   <h1>BBC BASIC VDU string generator</h1>
@@ -21,209 +28,209 @@
 
   <h2>VDU code summary</h2>
   <a href="https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html">Source: https://central.kaserver5.org/Kasoft/Typeset/BBC/Ch34.html</a>
-  <p></p><table border="1">
+  <p></p><table id="lookup" border="1">
     <tr><th align="left" width="12"><strong><tt>Decimal</tt></strong>
     </th><th width="16"><strong><tt>Hex</tt></strong>
     </th><th width="7"><strong><tt>CTRL</tt></strong>
     </th><th width="25"><strong><tt>ASCII abbrev.</tt></strong>
     </th><th width="7"><strong><tt>Bytes extra</tt></strong>
     </th><th width="200"><strong><tt>Meaning</tt></strong>
-    </th></tr><tr><td align="right">0
-    </td><td align="right">0
-    </td><td align="right">@
-    </td><td align="right">NUL
+    </th></tr><tr><td>0
+    </td><td>0
+    </td><td>@
+    </td><td>NUL
     </td><td>0
     </td><td>does nothing
-    </td></tr><tr><td align="right">1
-    </td><td align="right">1
-    </td><td align="right">A
-    </td><td align="right">SOH
+    </td></tr><tr><td>1
+    </td><td>1
+    </td><td>A
+    </td><td>SOH
     </td><td>1
     </td><td>send next character to printer only
-    </td></tr><tr><td align="right">2
-    </td><td align="right">2
-    </td><td align="right">B
-    </td><td align="right">STX
+    </td></tr><tr><td>2
+    </td><td>2
+    </td><td>B
+    </td><td>STX
     </td><td>0
     </td><td>enable printer
-    </td></tr><tr><td align="right">3
-    </td><td align="right">3
-    </td><td align="right">C
-    </td><td align="right">ETX
+    </td></tr><tr><td>3
+    </td><td>3
+    </td><td>C
+    </td><td>ETX
     </td><td>0
     </td><td>disable printer
-    </td></tr><tr><td align="right">4
-    </td><td align="right">4
-    </td><td align="right">D
-    </td><td align="right">EOT
+    </td></tr><tr><td>4
+    </td><td>4
+    </td><td>D
+    </td><td>EOT
     </td><td>0
     </td><td>write text at text cursor
-    </td></tr><tr><td align="right">5
-    </td><td align="right">5
-    </td><td align="right">E
-    </td><td align="right">ENQ
+    </td></tr><tr><td>5
+    </td><td>5
+    </td><td>E
+    </td><td>ENQ
     </td><td>0
     </td><td>write text at graphics cursor
-    </td></tr><tr><td align="right">6
-    </td><td align="right">6
-    </td><td align="right">F
-    </td><td align="right">ACK
+    </td></tr><tr><td>6
+    </td><td>6
+    </td><td>F
+    </td><td>ACK
     </td><td>0
     </td><td>enable VDU drivers
-    </td></tr><tr><td align="right">7
-    </td><td align="right">7
-    </td><td align="right">G
-    </td><td align="right">BEL
+    </td></tr><tr><td>7
+    </td><td>7
+    </td><td>G
+    </td><td>BEL
     </td><td>0
     </td><td>make a short beep
-    </td></tr><tr><td align="right">8
-    </td><td align="right">8
-    </td><td align="right">H
-    </td><td align="right">BS
+    </td></tr><tr><td>8
+    </td><td>8
+    </td><td>H
+    </td><td>BS
     </td><td>0
     </td><td>backspace cursor one character
-    </td></tr><tr><td align="right">9
-    </td><td align="right">9
-    </td><td align="right">I
-    </td><td align="right">HT
+    </td></tr><tr><td>9
+    </td><td>9
+    </td><td>I
+    </td><td>HT
     </td><td>0
     </td><td>forwardspace cursor one character
-    </td></tr><tr><td align="right">10
-    </td><td align="right">A
-    </td><td align="right">J
-    </td><td align="right">LF
+    </td></tr><tr><td>10
+    </td><td>A
+    </td><td>J
+    </td><td>LF
     </td><td>0
     </td><td>move cursor down one line
-    </td></tr><tr><td align="right">11
-    </td><td align="right">B
-    </td><td align="right">K
-    </td><td align="right">VT
+    </td></tr><tr><td>11
+    </td><td>B
+    </td><td>K
+    </td><td>VT
     </td><td>0
     </td><td>move cursor up one line
-    </td></tr><tr><td align="right">12
-    </td><td align="right">C
-    </td><td align="right">L
-    </td><td align="right">FF
+    </td></tr><tr><td>12
+    </td><td>C
+    </td><td>L
+    </td><td>FF
     </td><td>0
     </td><td>clear text area
-    </td></tr><tr><td align="right">13
-    </td><td align="right">D
-    </td><td align="right">M
-    </td><td align="right">CR
+    </td></tr><tr><td>13
+    </td><td>D
+    </td><td>M
+    </td><td>CR
     </td><td>0
     </td><td>move cursor to start of current line
-    </td></tr><tr><td align="right">14
-    </td><td align="right">E
-    </td><td align="right">N
-    </td><td align="right">SO
+    </td></tr><tr><td>14
+    </td><td>E
+    </td><td>N
+    </td><td>SO
     </td><td>0
     </td><td>page mode on
-    </td></tr><tr><td align="right">15
-    </td><td align="right">F
-    </td><td align="right">O
-    </td><td align="right">SI
+    </td></tr><tr><td>15
+    </td><td>F
+    </td><td>O
+    </td><td>SI
     </td><td>0
     </td><td>page mode off
-    </td></tr><tr><td align="right">16
-    </td><td align="right">10
-    </td><td align="right">P
-    </td><td align="right">DLE
+    </td></tr><tr><td>16
+    </td><td>10
+    </td><td>P
+    </td><td>DLE
     </td><td>0
     </td><td>clear graphics area
-    </td></tr><tr><td align="right">17
-    </td><td align="right">11
-    </td><td align="right">Q
-    </td><td align="right">DC1
+    </td></tr><tr><td>17
+    </td><td>11
+    </td><td>Q
+    </td><td>DC1
     </td><td>1
     </td><td>define text colour
-    </td></tr><tr><td align="right">18
-    </td><td align="right">12
-    </td><td align="right">R
-    </td><td align="right">DC2
+    </td></tr><tr><td>18
+    </td><td>12
+    </td><td>R
+    </td><td>DC2
     </td><td>2
     </td><td>define graphics colour
-    </td></tr><tr><td align="right">19
-    </td><td align="right">13
-    </td><td align="right">S
-    </td><td align="right">DC3
+    </td></tr><tr><td>19
+    </td><td>13
+    </td><td>S
+    </td><td>DC3
     </td><td>5
     </td><td>define logical colour
-    </td></tr><tr><td align="right">20
-    </td><td align="right">14
-    </td><td align="right">T
-    </td><td align="right">DC4
+    </td></tr><tr><td>20
+    </td><td>14
+    </td><td>T
+    </td><td>DC4
     </td><td>0
     </td><td>restore default logical colours
-    </td></tr><tr><td align="right">21
-    </td><td align="right">15
-    </td><td align="right">U
-    </td><td align="right">NAK
+    </td></tr><tr><td>21
+    </td><td>15
+    </td><td>U
+    </td><td>NAK
     </td><td>0
     </td><td>disable VDU drivers or delete current line
-    </td></tr><tr><td align="right">22
-    </td><td align="right">16
-    </td><td align="right">V
-    </td><td align="right">SYN
+    </td></tr><tr><td>22
+    </td><td>16
+    </td><td>V
+    </td><td>SYN
     </td><td>1
     </td><td>select screen mode
-    </td></tr><tr><td align="right">23
-    </td><td align="right">17
-    </td><td align="right">W
-    </td><td align="right">ETB
+    </td></tr><tr><td>23
+    </td><td>17
+    </td><td>W
+    </td><td>ETB
     </td><td>9
     </td><td>re-program display character
-    </td></tr><tr><td align="right">24
-    </td><td align="right">18
-    </td><td align="right">X
-    </td><td align="right">CAN
+    </td></tr><tr><td>24
+    </td><td>18
+    </td><td>X
+    </td><td>CAN
     </td><td>8
     </td><td>define graphics window
-    </td></tr><tr><td align="right">25
-    </td><td align="right">19
-    </td><td align="right">Y
-    </td><td align="right">EM
+    </td></tr><tr><td>25
+    </td><td>19
+    </td><td>Y
+    </td><td>EM
     </td><td>5
     </td><td><strong>PLOT K,x,y</strong>
-    </td></tr><tr><td align="right">26
-    </td><td align="right">1A
-    </td><td align="right">Z
-    </td><td align="right">SUB
+    </td></tr><tr><td>26
+    </td><td>1A
+    </td><td>Z
+    </td><td>SUB
     </td><td>0
     </td><td>restore default windows
-    </td></tr><tr><td align="right">27
-    </td><td align="right">1B
-    </td><td align="right">[
-    </td><td align="right">ESC
+    </td></tr><tr><td>27
+    </td><td>1B
+    </td><td>[
+    </td><td>ESC
     </td><td>0
     </td><td>does nothing
-    </td></tr><tr><td align="right">28
-    </td><td align="right">1C
-    </td><td align="right">\
-    </td><td align="right">FS
+    </td></tr><tr><td>28
+    </td><td>1C
+    </td><td>\
+    </td><td>FS
     </td><td>4
     </td><td>define text window
-    </td></tr><tr><td align="right">29
-    </td><td align="right">1D
-    </td><td align="right">]
-    </td><td align="right">GS
+    </td></tr><tr><td>29
+    </td><td>1D
+    </td><td>]
+    </td><td>GS
     </td><td>4
     </td><td>define graphics origin
-    </td></tr><tr><td align="right">30
-    </td><td align="right">1E
-    </td><td align="right">^
-    </td><td align="right">RS
+    </td></tr><tr><td>30
+    </td><td>1E
+    </td><td>^
+    </td><td>RS
     </td><td>0
     </td><td>home text cursor to top left
-    </td></tr><tr><td align="right">31
-    </td><td align="right">1F
-    </td><td align="right">_
-    </td><td align="right">US
+    </td></tr><tr><td>31
+    </td><td>1F
+    </td><td>_
+    </td><td>US
     </td><td>2
     </td><td>move text cursor to x,y
-    </td></tr><tr><td align="right">127
-    </td><td align="right">7F
-    </td><td align="right"><em>none</em>
-    </td><td align="right">DEL
+    </td></tr><tr><td>127
+    </td><td>7F
+    </td><td><em>none</em>
+    </td><td>DEL
     </td><td>0
     </td><td>Backspace and delete
     </td></tr></table>
@@ -279,6 +286,6 @@
 
     document.getElementById("code").addEventListener("keyup", main);
 
-  </script>
-</body>
-</html>
+    </script>
+  </body>
+  </html>
