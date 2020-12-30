@@ -19,8 +19,8 @@
 </style>
 <body>
   <h1>BBC BASIC VDU string generator</h1>
-  <p>This page takes a comma separated list of numbers and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a>. You can find <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/vdu">source for this page</a> on Github</p>
-  <h2>VDU code</h2>
+  <p>This page takes a comma separated list of numbers and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a>. You can find <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/vdu">source for this page</a> on Github.<br>Words - values over 255 or preceded with a 'w' will be converted to two byte words.</p>
+  <h2>VDU code </h2>
   <input id="vdu_code" size="100"></input>
   <h2>PRINT string equivalent</h2>
   <pre id="output" size="100"></pre>
@@ -180,7 +180,8 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
     }
 
     function splitWords(n){
-      if (n<256) return n;
+      if (n.charAt(0)!="w" && n<256) return n;
+      if (n.charAt(0)=="w") n=parseInt(n.substring(1),10)
       return `${n & 0xFF},${n >> 8}`;
     }
 
