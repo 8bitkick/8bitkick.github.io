@@ -180,7 +180,7 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
     }
 
     function splitWords(n){
-      if (n.charAt(0)!="w" && n<256) return n;
+      if (n.charAt(0)!="w" && n<256 && n>=0) return n;
       if (n.charAt(0)=="w") n=parseInt(n.substring(1),10)
       return `${n & 0xFF},${n >> 8}`;
     }
