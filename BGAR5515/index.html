@@ -1,0 +1,61 @@
+<html>
+<head>
+  <body>
+    <pre>BGAR5515 128x128 Image Convertor - check console for output</pre>
+    <input type="file" id="input"/>
+    <canvas id="myCanvas" width="128" height="128"></canvas>
+
+    <script>
+    let canvas = document.getElementById('myCanvas');
+    let ctx = canvas.getContext('2d');
+
+    function handleFiles(e) {
+      var URL = window.webkitURL || window.URL;
+      var max_width = 400;
+      var max_height = 300;
+      var url = URL.createObjectURL(e.target.files[0]);
+      var img = new Image();
+      img.onload = function() {
+        var ratio = 1;
+        if (img.width > max_width) {
+          ratio = max_width / img.width;
+        }
+        if (ratio * img.height > max_height) {
+          ratio = max_height / img.height;
+        }
+        ctx.scale(ratio, ratio);
+        ctx.drawImage(img, 0, 0);
+        canvasToBGAR5515()
+      };
+      img.src = url;
+    }
+
+
+    function canvasToBGAR5515() {
+      let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+      let data = imageData.data;
+      let outData = [];
+
+      for (let i=0; i < data.length; i=i+4) {
+        const red = data[i];
+        const green = data[i+1];
+        const blue = data[i+2];
+        const alpha = data[i+3];
+
+        let high = (blue &  0b11111000) | green >> 5; // BBBBB GGG
+        let low  = (green & 0b00011000) << 3 | red >> 3; // GGA RRRRR
+        low = alpha > 0x80 ? (low | 0b00100000) : low;
+
+        outData.push(low);
+        outData.push(high);
+      }
+      console.log("[\n"+outData.join(",")+"\n]\n");
+      return outData;
+    }
+
+
+    window.onload = function() {
+      var input = document.getElementById('input');
+      input.addEventListener('change', handleFiles, false);
+    };
+    </script>
