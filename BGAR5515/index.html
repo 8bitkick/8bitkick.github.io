@@ -45,7 +45,7 @@
 
         let high = (blue &  0b11111000) | green >> 5; // BBBBB GGG
         let low  = (green & 0b00011000) << 3 | red >> 3; // GGA RRRRR
-        low = alpha > 0x80 ? (low | 0b00100000) : low;
+        low = (red+green+blue !== 0) ? (low | 0b00100000) : low;
 
         outData.push(low);
         outData.push(high);
