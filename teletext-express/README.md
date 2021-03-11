@@ -4,6 +4,8 @@ Teletext express is a [free web-based tool](https://8bitkick.github.io/teletext-
 
 The tool is fully functional but cross-brower testing and UI improvements are still needed.
 
+Teletext Express is GPLv3 and requires attribution. For more details, please see LICENSE
+
 ## Conversion technique
 
 ### Image pre-processing
