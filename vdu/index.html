@@ -17,11 +17,26 @@
   }
 
 </style>
+</head>
 <body>
   <h1>BBC BASIC VDU string generator</h1>
-  <p>This page takes a comma separated list of numbers and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a>. You can find <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/vdu">source for this page</a> on Github.<br>Words - values over 255 or preceded with a 'w' will be converted to two byte words.</p>
-  <h2>VDU code </h2>
-  <input id="vdu_code" size="100"></input>
+  <p>This page takes a simplified BASIC program (just REM, VDU, CLS, CLG, COLOUR, GCOL, MODE, PLOT, MOVE and DRAW) and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a>. You can find <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/vdu">source for this page</a> on Github.</p>
+  <h2>Simplified BBC Basic code </h2>
+  <textarea id="basic_code" rows="5" cols="80">
+  REM example, replace with your code
+  MODE 2
+  COLOUR 131:CLS
+  VDU 19, 3, 7; 0; : REM Set palette COL 3=7 (white)
+  VDU 19, 2, 6; 0; : REM Set palette COL 2=6 (cyan)
+  VDU 19, 1, 4; 0; : REM Set palette COL 1=4 (blue)
+  VDU 5 : REM graphics text, cursor off
+  VDU 29, 640; 512; : REM Set graphics origin
+  GCOL0,1 : REM should be blue, not red
+  MOVE 100,100
+  PLOT&amp;91, 100,0  
+  </textarea>
+  <h2>VDU code equivalent</h2>
+  <pre id="vdu_code" size="100"></pre>
   <h2>PRINT string equivalent</h2>
   <pre id="output" size="100"></pre>
   <a href="" id="owlet" target="_blank">Open this code on bbcmic.ro</a>
@@ -172,37 +187,81 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
       return String.fromCharCode((n < 32 || n > 126) ? n+256 : n);
     }
 
+    function toNumber(n) {
+      n = n.trim();
+      if (n == "") {
+        return NaN;
+      }
+      if (n.startsWith("&")) {
+  	    return parseInt(n.substring(1), 16);
+      } else {
+        return parseInt(n,10);
+      }      
+    }
+    
     function processNumber(n){
-      n = parseInt(n,10)
+      if (isNaN(n)) {
+        return;
+      }
       if (n==13) {out += '[WARN: 13 cannot be encoded]';}
       if (n==34) {out += safeChar(n);} // escape "
       out += safeChar(n);
     }
 
-    function splitWords(n){
-      if (n.charAt(0)!="w" && n<256 && n>=0) return n;
-      if (n.charAt(0)=="w") n=parseInt(n.substring(1),10)
-      return `${n & 0xFF},${n >> 8}`;
-    }
-
-    function updateHTML(){
+    function updateHTML() {
       let prog = encodeURI(JSON.stringify({v:1,program:'MODE1\nPRINT"'+out+'"'}));
       document.getElementById("vdu_code").innerHTML="VDU "+vdu.join(',');
       document.getElementById("output").innerHTML=`PRINT"${out}"`;
       document.getElementById("owlet").setAttribute("href","https://bbcmic.ro/#"+prog);
     }
 
+    function wordsToBytes(args) {
+    	return args.map(n => [n % 256, Math.floor(n/256)]).flat();
+    }
+    
+    function wordMatchToBytes(_, str) {
+    	let bytes = wordsToBytes([toNumber(str)]);
+      return `${bytes[0]},${bytes[1]},`
+    }
+      
+    function lineToData(line) {      
+      line = line.replaceAll(/(\d+)\s*;/g, wordMatchToBytes);
+      let match = line.match(/([A-Z]+)(.*)/);
+      if (!match) {
+        return [];
+      }
+      let cmd = match[1];
+      let args = match[2].split(",").map(toNumber).filter(x => !isNaN(x));
+
+      switch(cmd) {
+        case "VDU": return args;
+        case "CLS": return [12];
+        case "CLG": return [16];
+        case "COLOUR": return [17, ...args];
+        case "GCOL": return [18, ...args];
+        case "MODE": return [22, ...args];
+        case "PLOT": return [25, args[0], ...wordsToBytes(args.slice(1))];
+        case "MOVE": return [25, 4, ...wordsToBytes(args)];
+        case "DRAW": return [25, 5, ...wordsToBytes(args)];      
+     	}
+      return [];
+    }
+      
     function vduToString(){
       out ="";
-      let vdu = document.getElementById("vdu_code").value.split(",");
-      console.log(vdu)
-      vdu = vdu.map(splitWords).join(",").split(",");
-      console.log(vdu)
+      vdu = [];
+      let code = document.getElementById("basic_code").value
+      
+      code = code.replaceAll("REM.*?\n","\n");
+      code.split(/[\n:]/).forEach(line => vdu.push(...lineToData(line)))
+         
       vdu.forEach(k => {processNumber(k)});
       updateHTML();
     }
 
-    document.getElementById("vdu_code").addEventListener("keyup", vduToString);
+    document.getElementById("basic_code").addEventListener("keyup", vduToString);
+    
+    document.onLoad(vduToString());
 
     </script>
   </body>
