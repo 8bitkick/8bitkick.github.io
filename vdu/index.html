@@ -210,7 +210,7 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
     }
 
     function updateHTML() {
-      let prog = encodeURI(JSON.stringify({v:1,program:'MODE1\nPRINT"'+out+'"'}));
+      let prog = encodeURI(JSON.stringify({v:1,program:'PRINT"'+out+'"'}));
       document.getElementById("vdu_code").innerHTML="VDU "+vdu.join(',');
       document.getElementById("output").innerHTML=`PRINT"${out}"`;
       document.getElementById("owlet").setAttribute("href","https://bbcmic.ro/#"+prog);
