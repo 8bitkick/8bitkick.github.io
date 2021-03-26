@@ -217,7 +217,7 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
     }
 
     function wordsToBytes(args) {
-    	return args.map(n => [n % 256, Math.floor(n/256)]).flat();
+    	return args.map(n => [((n % 256)+256) % 256, Math.floor(n/256) & 255]).flat();
     }
     
     function wordMatchToBytes(_, str) {
@@ -226,7 +226,7 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
     }
       
     function lineToData(line) {      
-      line = line.replaceAll(/(\d+)\s*;/g, wordMatchToBytes);
+      line = line.replaceAll(/([0-9-]+)\s*;/g, wordMatchToBytes);
       let match = line.match(/([A-Z]+)(.*)/);
       if (!match) {
         return [];
