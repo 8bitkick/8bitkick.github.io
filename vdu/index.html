@@ -22,6 +22,7 @@
   <h1>BBC BASIC VDU string generator</h1>
   <p>This page takes a simplified BASIC program (just REM, VDU, CLS, CLG, COLOUR, GCOL, MODE, PLOT, MOVE and DRAW) and returns a string that can be tweeted to <a href="https://www.bbcmicrobot.com">BBCMicroBot</a>. You can find <a href="https://github.com/8bitkick/8bitkick.github.io/tree/master/vdu">source for this page</a> on Github. 
   This and other code golf tips can be found in the <a href="https://github.com/8bitkick/BBCMicroBot/blob/master/docs/user%20guide.md#advanced-minification-techniques">BBC Micro Bot User Guide</a>.</p>
+  <p>🚀 Rocket, 🎬 Clapper, ⛔ Disable</p>
   <h2>Enter BBC BASIC code below</h2>
   <textarea id="basic_code" rows="5" cols="80">
   REM example, replace with your code
@@ -204,6 +205,7 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
       if (isNaN(n)) {
         return;
       }
+      if (n==10) {out += '[WARN: 10 cannot be encoded]';}
       if (n==13) {out += '[WARN: 13 cannot be encoded]';}
       if (n==34) {out += safeChar(n);} // escape "
       out += safeChar(n);
@@ -212,7 +214,7 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
     function updateHTML() {
       let prog = encodeURI(JSON.stringify({v:1,program:'PRINT"'+out+'"'}));
       document.getElementById("vdu_code").innerHTML="VDU "+vdu.join(',');
-      document.getElementById("output").innerHTML=`PRINT"${out}"`;
+      document.getElementById("output").innerText=`PRINT"${out}"`;
       document.getElementById("owlet").setAttribute("href","https://bbcmic.ro/#"+prog);
     }
 
