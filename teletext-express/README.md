@@ -2,7 +2,7 @@
 
 Teletext express is a [free web-based tool](https://8bitkick.github.io/teletext-express/) that converts video to teletext in real-time
 
-The tool is fully functional but cross-brower testing and UI improvements are still needed.
+The tool is fully functional in Chrome - cross-brower testing and UI improvements are still needed.
 
 Teletext Express is GPLv3 and requires attribution. For more details, please see LICENSE
 
