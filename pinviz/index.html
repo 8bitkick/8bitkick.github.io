@@ -137,7 +137,7 @@
 
         audio.src = URL.createObjectURL(files[0]);
         audio.load();
-        audio.play();
+      //  audio.play();
         play();
       }
 
@@ -147,7 +147,7 @@
         let analyser = context.createAnalyser();
         src.connect(analyser);
         analyser.connect(context.destination);
-        analyser.fftSize = 4096/2;
+        analyser.fftSize = 4096*2;
         let bufferLength = analyser.frequencyBinCount;
         let dataArray = new Uint8Array(bufferLength);
 
@@ -176,23 +176,23 @@
         const reflectionCube = new THREE.CubeTextureLoader().load( urls );
         const refractionCube = new THREE.CubeTextureLoader().load( urls );
         refractionCube.mapping = THREE.CubeRefractionMapping;
-
+        //scene.background = reflectionCube;
         //materials
-        const cubeMaterial1 = new THREE.MeshLambertMaterial( { color: 0xffffff, envMap: reflectionCube } );
-        const geometry = new THREE.BoxGeometry( 65, 65, 2 );
+        const cubeMaterial1 = new THREE.MeshLambertMaterial( { color: 0x88888888, envMap: reflectionCube } );
+        const geometry = new THREE.BoxGeometry( 129, 129, 2 );
         const material = new THREE.MeshBasicMaterial( {color: 0x111111} );
         const box = new THREE.Mesh( geometry, material );
         box.position.set(0,0,-4);
         group.add( box );
 
-        let pinhead = new THREE.IcosahedronGeometry(0.99,1);
+        let pinhead = new THREE.IcosahedronGeometry(0.99,12);
         let pin = new THREE.CylinderGeometry( 0.5, 0.5, 20, 16 );
 
         let balls = [];
         let b = -1;
 
-        for (let x = -16; x<16; x++){
-          for (let y = -16; y<16; y++){
+        for (let x = -32; x<32; x++){
+          for (let y = -32; y<32; y++){
             b++;
             let ph = new THREE.Mesh(pinhead, cubeMaterial1);
             let ps = new THREE.Mesh(pin, cubeMaterial1);
@@ -207,12 +207,12 @@
         }
 
         group.rotation.x = -0.25 * Math.PI;
-        let ambientLight = new THREE.AmbientLight(0xdddddd);
+        let ambientLight = new THREE.AmbientLight(0xffffff);
         scene.add(ambientLight);
 
         let spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.intensity = 4;
-        spotLight.position.set(-10, 40, 20);
+        spotLight.intensity = 10;
+        spotLight.position.set(-10, 20, 120);
         spotLight.lookAt(0,0,0);
         spotLight.castShadow = true;
         scene.add(spotLight);
@@ -245,11 +245,11 @@
           });
         }
 
-        audio.play();
+      //  audio.play();
       };
     }
 
     window.onload = vizInit();
-    document.body.addEventListener('touchend', function(ev) { context.resume(); });
+
 
   </script>
