@@ -1,0 +1,255 @@
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"></script>
+  <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+<style>
+    :root{
+      --bgColor : hsla(120, 86%, 3%, 1);
+      --bgColorLight : hsla(197, 86%, 30%, 1);
+      --textColor : hsla(242, 86%, 88%, 1);
+      --textColorDark : hsla(242, 36%, 0%, 1);
+      --paperColor: hsla(242, 86%, 44%, 1);
+      --paperColorDark: hsla(242, 86%, 34%, 1);
+      --shadowColorFaint: hsla(0, 0%, 0%, 0.2);
+    }
+
+    ::selected{
+      color: var(--textColorDark);
+    }
+
+    html, body{
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      background: var(--bgColor);
+      background: linear-gradient(135deg, var(--bgColor), var(--bgColorLight));
+      color: var(--textColor);
+      font-family: 'Saira', sans-serif;
+      position: relative;
+    }
+
+    *{
+      box-sizing: border-box;
+      transition: all 0.12s cubic-bezier(0.42, 0.54, 0.22, 1.26);
+    }
+
+    #canvas {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    audio {
+      position: fixed;
+      left: 10px;
+      bottom: -10px;
+      width: calc(100% - 20px);
+    }
+
+    audio.active{
+      bottom: 10px;
+    }
+
+    #thefile{
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: 1;
+    }
+
+    label.file{
+      display: inline-block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      padding: 1rem 2rem;
+      border-radius: 4px;
+
+      background: var(--paperColor);
+      color: var(--textColor);
+      font-size: 1.25em;
+      font-weight: 700;
+      box-shadow: 0 20px 60px var(--shadowColorFaint);
+
+      cursor: pointer;
+    }
+
+
+    label.file:hover{
+      background: var(--paperColorDark);
+      transform: translate3d(-50%, -55%, 0);
+    }
+
+    label.file:active{
+      background: var(--paperColorDark);
+      transform: translate3d(-50%, -45%, 0);
+    }
+
+    label.file.normal{
+      transform: translate3d(10%, 50%, 0);
+      padding: 0.2rem 2rem;
+      font-size: 1rem;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="content">
+
+    <label for="thefile" class="file"> Choose an audio file
+      <input type="file" id="thefile" accept="audio/*" />
+    </label>
+
+    <audio id="audio" controls></audio>
+    <div id="out"></div>
+  </div>
+  <script>
+
+    // source
+
+    // https://medium.com/@mag_ops/music-visualiser-with-three-js-web-audio-api-b30175e7b5ba
+    // https://github.com/mrdoob/three.js/blob/master/examples/webgl_materials_cubemap.html
+
+    // the main visualiser function
+    let vizInit = function (){
+
+      let file = document.getElementById("thefile");
+      let audio = document.getElementById("audio");
+      let fileLabel = document.querySelector("label.file");
+
+      document.onload = function(e){
+        console.log(e);
+        audio.play();
+        play();
+      }
+      file.onchange = function(){
+        fileLabel.classList.add('normal');
+        audio.classList.add('active');
+        let files = this.files;
+
+        audio.src = URL.createObjectURL(files[0]);
+        audio.load();
+        audio.play();
+        play();
+      }
+
+      function play() {
+        let context = new AudioContext();
+        let src = context.createMediaElementSource(audio);
+        let analyser = context.createAnalyser();
+        src.connect(analyser);
+        analyser.connect(context.destination);
+        analyser.fftSize = 4096/2;
+        let bufferLength = analyser.frequencyBinCount;
+        let dataArray = new Uint8Array(bufferLength);
+
+        //here comes the webgl
+        let scene = new THREE.Scene();
+        let group = new THREE.Group();
+        let camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0,0,100);
+        camera.lookAt(scene.position);
+        scene.add(camera);
+
+        let renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        const controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        //cubemap
+        const path = 'https://threejs.org/examples/textures/cube/SwedishRoyalCastle/';
+        const format = '.jpg';
+        const urls = [
+        path + 'px' + format, path + 'nx' + format,
+        path + 'py' + format, path + 'ny' + format,
+        path + 'pz' + format, path + 'nz' + format
+        ];
+
+        const reflectionCube = new THREE.CubeTextureLoader().load( urls );
+        const refractionCube = new THREE.CubeTextureLoader().load( urls );
+        refractionCube.mapping = THREE.CubeRefractionMapping;
+
+        //materials
+        const cubeMaterial1 = new THREE.MeshLambertMaterial( { color: 0xffffff, envMap: reflectionCube } );
+        const geometry = new THREE.BoxGeometry( 65, 65, 2 );
+        const material = new THREE.MeshBasicMaterial( {color: 0x111111} );
+        const box = new THREE.Mesh( geometry, material );
+        box.position.set(0,0,-4);
+        group.add( box );
+
+        let pinhead = new THREE.IcosahedronGeometry(0.99,1);
+        let pin = new THREE.CylinderGeometry( 0.5, 0.5, 20, 16 );
+
+        let balls = [];
+        let b = -1;
+
+        for (let x = -16; x<16; x++){
+          for (let y = -16; y<16; y++){
+            b++;
+            let ph = new THREE.Mesh(pinhead, cubeMaterial1);
+            let ps = new THREE.Mesh(pin, cubeMaterial1);
+            ph.position.set(0,10,0);
+            balls[b] = new THREE.Group();
+            balls[b].add(ps);
+            balls[b].add(ph);
+            balls[b].rotation.x = Math.PI/2;
+            balls[b].position.set(x*2, y*2, 0);
+            group.add(balls[b]);
+          }
+        }
+
+        group.rotation.x = -0.25 * Math.PI;
+        let ambientLight = new THREE.AmbientLight(0xdddddd);
+        scene.add(ambientLight);
+
+        let spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.intensity = 4;
+        spotLight.position.set(-10, 40, 20);
+        spotLight.lookAt(0,0,0);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+        scene.add(group);
+
+        document.getElementById('out').appendChild(renderer.domElement);
+        window.addEventListener('resize', onWindowResize, false);
+        render();
+
+        function render() {
+          analyser.getByteFrequencyData(dataArray);
+          makeRoughBall(balls, dataArray);
+          controls.update();
+          renderer.render(scene, camera);
+          requestAnimationFrame(render);
+        }
+
+        function onWindowResize() {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function makeRoughBall(balls, dataArray) {
+          let c = 0;
+          balls.forEach(function (ball) {
+
+            balls[c].position.z = (Math.max(-8,-10+Math.sqrt(dataArray[Math.floor(c)])));
+            c++;
+          });
+        }
+
+        audio.play();
+      };
+    }
+
+    window.onload = vizInit();
+    document.body.addEventListener('touchend', function(ev) { context.resume(); });
+
+  </script>
