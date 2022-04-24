@@ -1,9 +1,9 @@
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
-<style>
+  <style>
     :root{
-      --bgColor : hsla(120, 86%, 3%, 1);
+      --bgColor : hsla(197, 86%, 3%, 1);
       --bgColorLight : hsla(197, 86%, 30%, 1);
       --textColor : hsla(242, 86%, 88%, 1);
       --textColorDark : hsla(242, 36%, 0%, 1);
@@ -118,6 +118,8 @@
     // https://medium.com/@mag_ops/music-visualiser-with-three-js-web-audio-api-b30175e7b5ba
     // https://github.com/mrdoob/three.js/blob/master/examples/webgl_materials_cubemap.html
 
+    const SIZE=16;
+
     // the main visualiser function
     let vizInit = function (){
 
@@ -137,7 +139,7 @@
 
         audio.src = URL.createObjectURL(files[0]);
         audio.load();
-      //  audio.play();
+        audio.play();
         play();
       }
 
@@ -147,7 +149,7 @@
         let analyser = context.createAnalyser();
         src.connect(analyser);
         analyser.connect(context.destination);
-        analyser.fftSize = 4096*2;
+        analyser.fftSize = SIZE*SIZE*8;
         let bufferLength = analyser.frequencyBinCount;
         let dataArray = new Uint8Array(bufferLength);
 
@@ -160,6 +162,7 @@
         scene.add(camera);
 
         let renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.outputEncoding = THREE.sRGBEncoding;
         const controls = new THREE.OrbitControls( camera, renderer.domElement );
 
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -176,80 +179,133 @@
         const reflectionCube = new THREE.CubeTextureLoader().load( urls );
         const refractionCube = new THREE.CubeTextureLoader().load( urls );
         refractionCube.mapping = THREE.CubeRefractionMapping;
+        //reflectionCube.encoding = THREE.sRGBEncoding;
         //scene.background = reflectionCube;
         //materials
-        const cubeMaterial1 = new THREE.MeshLambertMaterial( { color: 0x88888888, envMap: reflectionCube } );
-        const geometry = new THREE.BoxGeometry( 129, 129, 2 );
-        const material = new THREE.MeshBasicMaterial( {color: 0x111111} );
-        const box = new THREE.Mesh( geometry, material );
-        box.position.set(0,0,-4);
+        const cubeMaterial1 = new THREE.MeshLambertMaterial( {      envMapIntensity: 0.8,color: 0x88888888, envMap: reflectionCube } );
+        const geometry = new THREE.BoxGeometry( 4+(SIZE*4),  4+(SIZE*4), 1 );
+        const blackPlastic = new THREE.MeshLambertMaterial( {color: 0x010101} );
+        const box = new THREE.Mesh( geometry, blackPlastic );
+        box.position.set(-1,-1,-4);
+        box.castShadow = true; //default is false
+        box.receiveShadow = true; //default
+        blackPlastic.side = THREE.DoubleSide;
         group.add( box );
 
-        let pinhead = new THREE.IcosahedronGeometry(0.99,12);
-        let pin = new THREE.CylinderGeometry( 0.5, 0.5, 20, 16 );
 
-        let balls = [];
-        let b = -1;
+        const geometry2 = new THREE.BoxGeometry( 4+(SIZE*4),  4+(SIZE*4), 1 );
+        const material2 = new THREE.MeshPhysicalMaterial({
+          envMap: reflectionCube,
+          metalness: 0.5,
+          roughness: 0.2,
+          envMapIntensity: 2.5,
+        //  clearcoat: 1,
+          transparent: true,
+          transmission: 1,
+          opacity: 0.2,
+          reflectivity: 0.4,
+          thickness:2,
+          refractionRatio: 0.9,
+          ior: 1,
+          side: THREE.BackSide})
 
-        for (let x = -32; x<32; x++){
-          for (let y = -32; y<32; y++){
-            b++;
-            let ph = new THREE.Mesh(pinhead, cubeMaterial1);
-            let ps = new THREE.Mesh(pin, cubeMaterial1);
-            ph.position.set(0,10,0);
-            balls[b] = new THREE.Group();
-            balls[b].add(ps);
-            balls[b].add(ph);
-            balls[b].rotation.x = Math.PI/2;
-            balls[b].position.set(x*2, y*2, 0);
-            group.add(balls[b]);
+
+          const box2 = new THREE.Mesh( geometry2, material2 );
+          box2.position.set(-1,-1,15);
+          box2.rotation.x = Math.PI;
+          group.add( box2 );
+
+          let pinhead = new THREE.IcosahedronGeometry(0.9,12);
+          let pin = new THREE.CylinderGeometry( 0.5, 0.5, 20, 16 );
+          let standoff = new THREE.CylinderGeometry( 1, 1, 22, 32 );
+
+          function standoffs(x,y){
+          let s1 = new THREE.Mesh(standoff, blackPlastic);
+          s1.position.set(x, y, 5);
+          s1.rotation.x = Math.PI/2;
+          s1.castShadow = true; //default is false
+          s1.receiveShadow = true; //default
+          group.add(s1);
+        }
+
+         standoffs(SIZE*2,SIZE*2);
+standoffs(-2-SIZE*2,-2-SIZE*2);
+standoffs(SIZE*2,-2-SIZE*2);
+standoffs(-2-SIZE*2,SIZE*2);
+
+          let balls = [];
+          let b = -1;
+
+          for (let x = -SIZE; x<SIZE; x++){
+            for (let y = -SIZE; y<SIZE; y++){
+              b++;
+              let ph = new THREE.Mesh(pinhead, cubeMaterial1);
+              let ps = new THREE.Mesh(pin, cubeMaterial1);
+              ph.castShadow = true; //default is false
+              ph.receiveShadow = true; //default
+
+              ph.position.set(0,10,0);
+              balls[b] = new THREE.Group();
+              balls[b].add(ps);
+              balls[b].add(ph);
+              balls[b].rotation.x = Math.PI/2;
+              balls[b].position.set(x*2, y*2, 0);
+              group.add(balls[b]);
+            }
           }
-        }
 
-        group.rotation.x = -0.25 * Math.PI;
-        let ambientLight = new THREE.AmbientLight(0xffffff);
-        scene.add(ambientLight);
+          group.rotation.x = -0.25 * Math.PI;
+          let ambientLight = new THREE.AmbientLight(0xffffff);
+          ambientLight.intensity = 1.5;
+          //scene.add(ambientLight);
 
-        let spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.intensity = 10;
-        spotLight.position.set(-10, 20, 120);
-        spotLight.lookAt(0,0,0);
-        spotLight.castShadow = true;
-        scene.add(spotLight);
-        scene.add(group);
+          //Create a PointLight and turn on shadows for the light
+  const light = new THREE.PointLight( 0xffffff, 10, 100 );
+  light.position.set( 0,5,20);
+  light.castShadow = true; // default false
+  group.add( light );
 
-        document.getElementById('out').appendChild(renderer.domElement);
-        window.addEventListener('resize', onWindowResize, false);
-        render();
+  //Set up shadow properties for the light
+  light.shadow.mapSize.width = 512; // default
+  light.shadow.mapSize.height = 512; // default
+  light.shadow.camera.near = 0.5; // default
+  light.shadow.camera.far = 500; // default
 
-        function render() {
-          analyser.getByteFrequencyData(dataArray);
-          makeRoughBall(balls, dataArray);
-          controls.update();
-          renderer.render(scene, camera);
-          requestAnimationFrame(render);
-        }
+          scene.add(group);
 
-        function onWindowResize() {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+          document.getElementById('out').appendChild(renderer.domElement);
+          window.addEventListener('resize', onWindowResize, false);
+          render();
 
-        function makeRoughBall(balls, dataArray) {
-          let c = 0;
-          balls.forEach(function (ball) {
+          function render() {
+            analyser.getByteFrequencyData(dataArray);
+            makeRoughBall(balls, dataArray);
+            controls.update();
+            renderer.render(scene, camera);
+            requestAnimationFrame(render);
+            group.rotation.z+=0.001;
+          }
 
-            balls[c].position.z = (Math.max(-8,-10+Math.sqrt(dataArray[Math.floor(c)])));
-            c++;
-          });
-        }
+          function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+          }
 
-      //  audio.play();
-      };
-    }
+          function makeRoughBall(balls, dataArray) {
+            let c = 0;
+            balls.forEach(function (ball) {
 
-    window.onload = vizInit();
+              balls[c].position.z = (Math.max(-10+Math.sqrt(dataArray[Math.floor(0)])*.2,-10+Math.sqrt(dataArray[Math.floor(c)])*.8));
+              c++;
+            });
+          }
+
+          audio.play();
+        };
+      }
+
+      window.onload = vizInit();
 
 
-  </script>
+    </script>
