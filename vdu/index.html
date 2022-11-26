@@ -205,8 +205,8 @@ VDU 23,n,p7,P2,p5,p4,p5,p6,p7,p8
       if (isNaN(n)) {
         return;
       }
-      if (n==10) {out += '[WARN: 10 cannot be encoded]';}
-      if (n==13) {out += '[WARN: 13 cannot be encoded]';}
+      if (n==10) {out += '[WARN: 10 cannot be encoded]'; return;}
+      if (n==13) {out += '[WARN: 13 cannot be encoded]'; return;}
       if (n==34) {out += safeChar(n);} // escape "
       out += safeChar(n);
     }
