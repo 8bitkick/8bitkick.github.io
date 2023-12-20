@@ -9,11 +9,11 @@ Caveat - this is a fun demo. If you ask it to build something complicated don't 
 Thanks to @asnar00 for the inspiration and feedback.
 
 ## Meta Quest 3 - Mixed-Reality
+![Snowman_WebXR-3](https://github.com/8bitkick/8bitkick.github.io/assets/26802703/8ca2037e-c3dc-4469-91f1-a148277c2853)
 
-![Snowman_WebXR-3](https://github.com/8bitkick/VoxelAstra/assets/26802703/2d88bb00-63a2-4280-9311-a25839370a80)
 
 ## Desktop mode
-<img width="1204" alt="desktop-mode" src="https://github.com/8bitkick/VoxelAstra/assets/26802703/d702f209-30c6-4122-a6bd-f0cc7abbd050">
+<img width="1204" alt="desktop-mode" src="https://github.com/8bitkick/8bitkick.github.io/assets/26802703/e40d420e-462e-47e8-8d2b-7b042560112a">
 
 
 ## Usage
