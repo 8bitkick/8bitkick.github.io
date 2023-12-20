@@ -15,7 +15,7 @@ export class App {
 
         this.testMode = urlParams.get('testMode') || 0;
 
-        this.apiKey = urlParams.get('api_key');
+        this.apiKey = urlParams.get('apiKey');
 
         if (!this.apiKey) {
             this.waitForKey();

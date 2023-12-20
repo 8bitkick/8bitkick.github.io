@@ -25,7 +25,7 @@ Open the page in your web browser and enter your OpenAI API key to get started (
 
 ### Permissions
 
-* This demo requests your OpenAI API key. It's designed to play nicely, but use at your own risk. 
+* This demo requests your OpenAI API key. It's designed to play nicely, but use at your own risk. You can either paste it in the web page, add it as the `?apiKey=xxxxxxx` URL parameter or hardcode it into `main.js` if you're hosting locally.
 
 * Browser will request microphone access - when you hold the mic button (or Meta Quest trigger button) your audio will be recorded and sent to OpenAI whisper API on button release.
 
