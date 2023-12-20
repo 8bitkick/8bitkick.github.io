@@ -3,6 +3,9 @@ You ask for it, AI builds it! [Try demo now](https://8bitkick.github.io/VoxelAst
 
 e.g. you say "build a snowman" into the mic, and the AI chooses from available [tools](https://github.com/8bitkick/VoxelAstra/blob/main/src/assistantConfig.js) to add spheres, cylinders and cubes of the shape, size, color, position, and rotation it thinks best create the requested scene for you using threejs and WebXR.
 
+Caveat - this is a fun demo. If you ask it to build something complicated don't be surprised if it just drops a cube on the floor
+
+
 Thanks to @asnar00 for the inspiration and feedback.
 
 ## Meta Quest 3 - Mixed-Reality
