@@ -1,5 +1,5 @@
 # VoxelAstra
-You ask for it, AI builds it! 
+You ask for it, AI builds it! [Try demo now](https://8bitkick.github.io/VoxelAstra/)
 
 e.g. you say "build a snowman" into the mic, and the AI chooses from available [tools](https://github.com/8bitkick/VoxelAstra/blob/main/src/assistantConfig.js) to add spheres, cylinders and cubes of the shape, size, color, position, and rotation it thinks best create the requested scene for you using threejs and WebXR.
 
