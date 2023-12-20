@@ -1,0 +1,23 @@
+{
+  "name": "VoxelAstra",
+  "version": "1.0.0",
+  "description": "AI-native reality creation prototype",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/8bitkick/VoxelAstra.git"
+  },
+  "author": "Dominic Pajak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/8bitkick/VoxelAstra/issues"
+  },
+  "homepage": "https://github.com/8bitkick/VoxelAstra#readme",
+  "dependencies": {
+    "three": "^0.159.0"
+  }
+}
