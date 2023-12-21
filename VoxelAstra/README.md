@@ -18,7 +18,9 @@ Thanks to @asnar00 for the inspiration and feedback.
 
 ## Usage
 
-Run a local web server (will be putting on a public site soon but it's private for now)
+[Try demo now](https://8bitkick.github.io/VoxelAstra/)
+
+or run a local server
 
 ```
 python3 -m http.server 8080
