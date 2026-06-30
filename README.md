@@ -11,7 +11,6 @@ Browser experiments and demos.
 - **[VoxelAstra](VoxelAstra/)** — Voice-controlled AI voxel scene builder (WebXR)
 
 ### Steganography
-- **[Stegatron](stegatron/)** — Hide BBC Micro programs in PNG images
 - **[Steg No Alpha](steg-no-alpha/)** — Steganography using RGB channels only
 - **[BGAR5515](BGAR5515/)** — Twitter image steganography demo
 
