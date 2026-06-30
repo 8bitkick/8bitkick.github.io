@@ -4,17 +4,136 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>8bitkick</title>
+<meta name="description" content="A tribute to the machines that inspired a generation — 8-bit retro computing projects, collectible cards, and browser experiments.">
+<meta name="keywords" content="commodore 64, commodore PET, sinclair ZX81, ZX Spectrum, Acorn Electron, BBC Micro, Tandy TRS-80, BBC Micro Bot, playUEF">
+<link rel="stylesheet" href="index.css">
 </head>
 <body>
-<h1>8bitkick</h1>
-<ul>
-  <li><a href="music-maker/">Synth Generator</a></li>
-  <li><a href="pinviz/">Pin Visualizer</a></li>
-  <li><a href="teletext-express/">Teletext Express</a></li>
-  <li><a href="VoxelAstra/">VoxelAstra</a></li>
-  <li><a href="BGAR5515/">BGAR5515</a></li>
-  <li><a href="vdu/">BBC BASIC VDU Generator</a></li>
-  <li><a href="ArduinoBLE_IMU/">Arduino BLE IMU</a></li>
-</ul>
+
+<button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+  <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-9.45-9.45A1 1 0 0 0 9.66 2 10 10 0 1 0 22 14.34 1 1 0 0 0 21.64 13z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0-5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1zm0 18a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1zM5.64 5.64a1 1 0 0 0-1.41 1.41l.7.71a1 1 0 0 0 1.42-1.42zM18.36 18.36a1 1 0 0 0-1.41 1.41l.7.71a1 1 0 0 0 1.42-1.42zM3 11H2a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zm19 0h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zM6.35 17.66l-.71.7a1 1 0 1 0 1.42 1.42l.7-.71a1 1 0 0 0-1.41-1.41zM18.36 5.64l.71-.7a1 1 0 1 0-1.42-1.42l-.7.71a1 1 0 0 0 1.41 1.41z"/></svg>
+</button>
+
+<header class="section top">
+  <p class="eyebrow">8bitkick</p>
+  <h1>8bitkick</h1>
+  <p class="lead">A tribute to the machines that inspired a generation — retro computing projects, collectible cards, and browser experiments.</p>
+  <div class="socials-row">
+    <a class="follow-link" href="https://www.dompajak.com/" target="_blank" rel="noopener">Created by Dominic Pajak</a>
+  </div>
+</header>
+
+<section class="section odd">
+  <p class="eyebrow">Collectible cards</p>
+  <h2>Home Computer Cards</h2>
+  <div class="lead-layout">
+    <div class="coverage-col">
+      <p>A tribute to the machines that brought computing home in the 1980s. The cards collate a small piece of computing history, letting you compare the stats of retro machines — and play a Top Trumps–style card game with them too.</p>
+      <p>Designs from the original Kickstarter deck were donated to the <a href="https://www.computinghistory.org.uk/" target="_blank" rel="noopener">Centre for Computing History</a>, who print and sell them to support their museum.</p>
+    </div>
+    <figure class="lead-chart chart-fig">
+      <img class="lead-photo" src="img/home-computers.jpg" alt="Home Computer collectible cards">
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">8-bit cloud</p>
+  <h2>BBC Micro Bot</h2>
+  <div class="lead-layout">
+    <div class="coverage-col">
+      <p>Send a tweet to <a href="https://twitter.com/bbcmicrobot" target="_blank" rel="noopener">@bbcmicrobot</a> and it runs on a full emulation of the BBC Micro Model B — a computer standard in UK schools in the 1980s — replying with a video. Try it with:</p>
+      <pre><code>10 MODE 2
+20 COLOUR RND(7)
+30 PRINT "HELLO WORLD"
+40 GOTO 20</code></pre>
+      <p>Congratulations — you've just written a program in BBC BASIC II (1982).</p>
+    </div>
+    <figure class="lead-chart chart-fig">
+      <img class="lead-photo" src="img/bbc-micro-bot.png" alt="BBC Micro Bot logo">
+    </figure>
+  </div>
+</section>
+
+<section class="section odd">
+  <p class="eyebrow">Cassette emulator</p>
+  <h2>PlayUEF</h2>
+  <div class="lead-layout">
+    <div class="coverage-col">
+      <p>Load classic Acorn / BBC Micro cassette software straight from your browser. Built with the suggestions and expertise of the Acorn community at the <a href="https://stardot.org.uk/" target="_blank" rel="noopener">Stardot forum</a>.</p>
+      <p><a href="playuef/">Open PlayUEF &rarr;</a></p>
+    </div>
+    <figure class="lead-chart chart-fig">
+      <img class="lead-photo" src="img/playuef.gif" alt="PlayUEF cassette tape">
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">Browser experiments</p>
+  <h2>Experiments &amp; demos</h2>
+  <div class="resume">
+    <div class="role">
+      <div class="role-head"><a class="role-title" href="music-maker/">Synth Generator</a></div>
+      <p>80s synthwave sequencer with WAV export.</p>
+    </div>
+    <div class="role">
+      <div class="role-head"><a class="role-title" href="pinviz/">Pin Visualizer</a></div>
+      <p>3D audio frequency visualizer.</p>
+    </div>
+    <div class="role">
+      <div class="role-head"><a class="role-title" href="teletext-express/">Teletext Express</a></div>
+      <p>Real-time video to BBC Teletext converter.</p>
+    </div>
+    <div class="role">
+      <div class="role-head"><a class="role-title" href="VoxelAstra/">VoxelAstra</a></div>
+      <p>Voice-controlled AI voxel scene builder (WebXR).</p>
+    </div>
+    <div class="role">
+      <div class="role-head"><a class="role-title" href="BGAR5515/">BGAR5515</a></div>
+      <p>128&times;128 image to C byte-array convertor.</p>
+    </div>
+    <div class="role">
+      <div class="role-head"><a class="role-title" href="vdu/">BBC BASIC VDU Generator</a></div>
+      <p>Convert BASIC to VDU byte strings for BBCMicroBot.</p>
+    </div>
+    <div class="role">
+      <div class="role-head"><a class="role-title" href="ArduinoBLE_IMU/">Arduino BLE IMU</a></div>
+      <p>IMU data streaming over Bluetooth LE.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section odd">
+  <p class="eyebrow">Get in touch</p>
+  <h2>Contact</h2>
+  <p>For questions about buying the cards, contact the <a href="https://www.computinghistory.org.uk/" target="_blank" rel="noopener">Centre for Computing History</a> store. For anything else, reach 8bitkick's creator on Twitter at <a href="https://twitter.com/DominicPajak" target="_blank" rel="noopener">@DominicPajak</a>.</p>
+</section>
+
+<footer class="section footer">
+  <nav class="footernav">
+    <a href="#">Home</a>
+    <a href="https://twitter.com/bbcmicrobot" target="_blank" rel="noopener">BBC Micro Bot</a>
+    <a href="playuef/">PlayUEF</a>
+    <a href="https://github.com/8bitkick" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+  <p><small>All product names and trademarks are property of their respective owners, who are in no way associated with this project. Content and data provided "as is" with no warranty as to accuracy. Photos used under their CC BY-SA license or Public Domain, with attribution on each card. Site content CC BY-SA 8bitkick.</small></p>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var saved = localStorage.getItem('theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  else if (window.matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
+  document.querySelector('.theme-toggle').addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+})();
+</script>
+
 </body>
 </html>
