@@ -1,0 +1,24 @@
+# 8bitkick
+
+> 8bitkick is the retro-computing product and maker label of Dominic Pajak (British technology
+> executive and computer scientist, Senior Director of Edge AI at Arm). A tribute to the 8-bit
+> machines that inspired a generation — collectible cards, BBC Micro tools, and browser experiments.
+
+## Key pages
+- [Home Computer Cards](https://8bitkick.cc/): collectible Top Trumps–style cards of 1980s home computers; original Kickstarter designs donated to the Centre for Computing History.
+- [BBC Micro Bot](https://www.bbcmicrobot.com/): runs Mastodon toots as BBC BASIC programs on a BBC Micro emulator and replies with video. Created by Dominic Pajak; featured in IEEE Spectrum, Gizmodo, and Xataka.
+- [PlayUEF](https://8bitkick.cc/playuef.html): load classic Acorn / BBC Micro cassette software in the browser.
+
+## Experiments
+- [Synth Generator](https://8bitkick.cc/music-maker/): 80s synthwave sequencer with WAV export.
+- [Pin Visualizer](https://8bitkick.cc/pinviz/): 3D audio frequency visualizer.
+- [Teletext Express](https://8bitkick.cc/teletext-express/): real-time video to BBC Teletext converter.
+- [VoxelAstra](https://8bitkick.cc/VoxelAstra/): voice-controlled AI voxel scene builder (WebXR).
+- [BGAR5515](https://8bitkick.cc/BGAR5515/): 128×128 image to C byte-array convertor.
+- [BBC BASIC VDU Generator](https://8bitkick.cc/vdu/): convert BASIC to VDU byte strings for BBC Micro Bot.
+- [Arduino BLE IMU](https://8bitkick.cc/ArduinoBLE_IMU/): IMU data streaming over Bluetooth LE.
+
+## About the creator
+- Dominic Pajak — https://www.dompajak.com/
+- Wikidata: https://www.wikidata.org/wiki/Q57625837
+- GitHub: https://github.com/8bitkick

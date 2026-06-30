@@ -6,6 +6,56 @@
 <title>8bitkick</title>
 <meta name="description" content="A tribute to the machines that inspired a generation — 8-bit retro computing projects, collectible cards, and browser experiments.">
 <meta name="keywords" content="commodore 64, commodore PET, sinclair ZX81, ZX Spectrum, Acorn Electron, BBC Micro, Tandy TRS-80, BBC Micro Bot, playUEF">
+<link rel="canonical" href="https://8bitkick.cc/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="8bitkick">
+<meta property="og:title" content="8bitkick">
+<meta property="og:description" content="A tribute to the machines that inspired a generation — 8-bit retro computing projects, collectible cards, and browser experiments.">
+<meta property="og:url" content="https://8bitkick.cc/">
+<meta property="og:image" content="https://8bitkick.cc/img/home-computers.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="8bitkick">
+<meta name="twitter:description" content="A tribute to the machines that inspired a generation — 8-bit retro computing projects, collectible cards, and browser experiments.">
+<meta name="twitter:image" content="https://8bitkick.cc/img/home-computers.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://8bitkick.cc/#website",
+      "url": "https://8bitkick.cc/",
+      "name": "8bitkick",
+      "description": "A tribute to the machines that inspired a generation — 8-bit retro computing projects, collectible cards, and browser experiments.",
+      "publisher": { "@id": "https://8bitkick.cc/#person" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://8bitkick.cc/#person",
+      "name": "Dominic Pajak",
+      "alternateName": "8bitkick",
+      "url": "https://www.dompajak.com/",
+      "jobTitle": "Senior Director, Edge AI",
+      "worksFor": { "@type": "Organization", "name": "Arm" },
+      "sameAs": [
+        "https://www.wikidata.org/wiki/Q57625837",
+        "https://scholar.google.com/citations?user=AfVrcqkAAAAJ",
+        "https://dblp.org/pid/161/0645.html",
+        "https://ieeexplore.ieee.org/author/37086628118",
+        "https://github.com/8bitkick",
+        "https://uk.linkedin.com/in/dominicpajak",
+        "https://www.crunchbase.com/person/dominic-pajak",
+        "https://x.com/dominicpajak",
+        "https://sfba.social/@DominicPajak"
+      ]
+    }
+  ]
+}
+</script>
+
 <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -16,12 +66,8 @@
 </button>
 
 <header class="section top">
-  <p class="eyebrow">8bitkick</p>
   <h1>8bitkick</h1>
-  <p class="lead">A tribute to the machines that inspired a generation — retro computing projects, collectible cards, and browser experiments.</p>
-  <div class="socials-row">
-    <a class="follow-link" href="https://www.dompajak.com/" target="_blank" rel="noopener">Created by Dominic Pajak</a>
-  </div>
+  <p class="lead">A tribute to the machines that inspired a generation.</p>
 </header>
 
 <section class="section odd">
@@ -39,19 +85,16 @@
 </section>
 
 <section class="section">
-  <p class="eyebrow">8-bit cloud</p>
+  <p class="eyebrow">Creative retro coding</p>
   <h2>BBC Micro Bot</h2>
   <div class="lead-layout">
     <div class="coverage-col">
-      <p>Send a tweet to <a href="https://twitter.com/bbcmicrobot" target="_blank" rel="noopener">@bbcmicrobot</a> and it runs on a full emulation of the BBC Micro Model B — a computer standard in UK schools in the 1980s — replying with a video. Try it with:</p>
-      <pre><code>10 MODE 2
-20 COLOUR RND(7)
-30 PRINT "HELLO WORLD"
-40 GOTO 20</code></pre>
-      <p>Congratulations — you've just written a program in BBC BASIC II (1982).</p>
+      <p>BBC Micro Bot runs your Mastodon toot on an 8-bit computer emulator and replies with a video. Toot-sized programs are written in BBC BASIC — a language created by Sophie Wilson in 1981 for the BBC Micro. It's amazing what people create in a few lines of code for a 1980s home computer!</p>
+      <p>Since 2020 it's been featured in <a href="https://gizmodo.com/this-bbc-micro-emulator-takes-you-back-to-1981-1845778222" target="_blank" rel="noopener">Gizmodo</a>, <a href="https://spectrum.ieee.org/tech-talk/computing/software/show-the-world-you-can-write-a-cool-program-inside-a-single-tweet" target="_blank" rel="noopener">IEEE Spectrum</a> and <a href="https://www.xataka.com/retro/ideas-geniales-este-prodigioso-bot-twitter-te-responde-ejecutando-programas-basic-para-mitico-bbc-micro" target="_blank" rel="noopener">Xataka</a>, and won fans including comedian Dara Ó Briain, science writer Ben Goldacre, and Raspberry Pi founder <a href="https://twitter.com/EbenUpton/status/1230646662680412162" target="_blank" rel="noopener">Eben Upton</a>. Over 10,000 BASIC programs have run through it, with a talented, friendly community.</p>
+      <p><a href="https://www.bbcmicrobot.com/" target="_blank" rel="noopener">Visit bbcmicrobot.com &rarr;</a></p>
     </div>
     <figure class="lead-chart chart-fig">
-      <img class="lead-photo" src="img/bbc-micro-bot.png" alt="BBC Micro Bot logo">
+      <img class="lead-photo" src="img/bbc-micro-bot.gif" alt="A 3D wireframe tunnel rendered by a BBC Micro emulator">
     </figure>
   </div>
 </section>
@@ -62,7 +105,7 @@
   <div class="lead-layout">
     <div class="coverage-col">
       <p>Load classic Acorn / BBC Micro cassette software straight from your browser. Built with the suggestions and expertise of the Acorn community at the <a href="https://stardot.org.uk/" target="_blank" rel="noopener">Stardot forum</a>.</p>
-      <p><a href="playuef/">Open PlayUEF &rarr;</a></p>
+      <p><a href="playuef.html">About PlayUEF &rarr;</a></p>
     </div>
     <figure class="lead-chart chart-fig">
       <img class="lead-photo" src="img/playuef.gif" alt="PlayUEF cassette tape">
@@ -108,17 +151,19 @@
 <section class="section odd">
   <p class="eyebrow">Get in touch</p>
   <h2>Contact</h2>
-  <p>For questions about buying the cards, contact the <a href="https://www.computinghistory.org.uk/" target="_blank" rel="noopener">Centre for Computing History</a> store. For anything else, reach 8bitkick's creator on Twitter at <a href="https://twitter.com/DominicPajak" target="_blank" rel="noopener">@DominicPajak</a>.</p>
+  <p>For questions about buying the cards, contact the <a href="https://www.computinghistory.org.uk/" target="_blank" rel="noopener">Centre for Computing History</a> store. For anything else, get in touch with 8bitkick's creator <a href="https://www.dompajak.com/" target="_blank" rel="noopener">Dominic Pajak</a>.</p>
 </section>
 
 <footer class="section footer">
   <nav class="footernav">
-    <a href="#">Home</a>
-    <a href="https://twitter.com/bbcmicrobot" target="_blank" rel="noopener">BBC Micro Bot</a>
-    <a href="playuef/">PlayUEF</a>
+    <a href="https://www.dompajak.com/" target="_blank" rel="noopener">Dominic Pajak</a>
+    <a href="https://www.bbcmicrobot.com/" target="_blank" rel="noopener">BBC Micro Bot</a>
+    <a href="playuef.html">PlayUEF</a>
+    <a href="https://uk.linkedin.com/in/dominicpajak" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://sfba.social/@DominicPajak" target="_blank" rel="noopener">Mastodon</a>
     <a href="https://github.com/8bitkick" target="_blank" rel="noopener">GitHub</a>
   </nav>
-  <p><small>All product names and trademarks are property of their respective owners, who are in no way associated with this project. Content and data provided "as is" with no warranty as to accuracy. Photos used under their CC BY-SA license or Public Domain, with attribution on each card. Site content CC BY-SA 8bitkick.</small></p>
+  <p><small>All product names and trademarks are property of their respective owners, who are in no way associated with this project. Content and data provided "as is" with no warranty as to accuracy. Photos used under their CC BY-SA license or Public Domain, with attribution on each card. Site content CC BY-NC-SA 8bitkick.</small></p>
 </footer>
 
 <script>

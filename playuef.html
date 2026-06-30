@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlayUEF — 8bitkick</title>
+<meta name="description" content="PlayUEF is a free, web-based player for UEF-format Acorn Electron and BBC Micro cassette games — load real 8-bit hardware straight from your browser.">
+<link rel="stylesheet" href="index.css">
+<style>
+  /* ---------- acorn green accent (this page only) ---------- */
+  :root {
+    --primary: #2BA630;        /* acorn logo green */
+    --primary-dark: #1f8126;
+    --primary-tint: #e4f6e5;
+  }
+  [data-theme="dark"] {
+    --primary: #5fcb5a;        /* brighter green on dark */
+    --primary-dark: #88dd81;
+    --primary-tint: #15331a;
+  }
+
+  /* ---------- machine picker ---------- */
+  .machines { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .machine {
+    flex: 0 1 200px; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--card); overflow: hidden; cursor: pointer; text-align: left;
+    padding: 0; color: inherit; font: inherit; transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  .machine:hover, .machine:focus-visible { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,.12); outline: none; }
+  .machine.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary) inset; }
+  .machine img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; background: #000; }
+  .machine .m-body { padding: .6rem .8rem .8rem; }
+  .machine h3 { margin: 0 0 .15rem; font-size: 1rem; }
+  .machine p { margin: 0; color: var(--ink-soft); font-size: .82rem; }
+
+  /* ---------- toolbar ---------- */
+  .toolbar { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin: 2rem 0 1.25rem; }
+  .search {
+    flex: 1 1 280px; min-width: 0; padding: .7rem 1rem; font: inherit;
+    color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  }
+  .search:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); }
+  .count { color: var(--ink-soft); font-size: .9rem; white-space: nowrap; }
+  .pill {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink-soft);
+    border-radius: 999px; padding: .4rem .9rem; font: inherit; font-size: .85rem; cursor: pointer;
+  }
+  .pill:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ---------- grid (masonry columns: cards keep natural height, no wasted space) ---------- */
+  .grid { column-count: 3; column-gap: .7rem; }
+  @media (max-width: 720px) { .grid { column-count: 2; } }
+  @media (max-width: 460px) { .grid { column-count: 1; } }
+  .game {
+    display: block; break-inside: avoid; margin: 0 0 .7rem; text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--card);
+    padding: .85rem .95rem; transition: border-color .15s ease, transform .12s ease;
+  }
+  .game:hover { border-color: var(--primary); transform: translateY(-2px); }
+  .game .g-title { display: block; font-weight: 650; letter-spacing: -.01em; line-height: 1.2; margin-bottom: .4rem; }
+  .game .g-meta { font-size: .82rem; color: var(--ink-soft); display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+  .badge { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+           padding: .12rem .45rem; border-radius: 6px; background: var(--primary-tint); color: var(--primary-dark); }
+  .badge.both { background: var(--line); color: var(--ink-soft); }
+  .more { text-align: center; color: var(--ink-soft); margin-top: 1.5rem; font-size: .9rem; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+  <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-9.45-9.45A1 1 0 0 0 9.66 2 10 10 0 1 0 22 14.34 1 1 0 0 0 21.64 13z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0-5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1zm0 18a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1zM5.64 5.64a1 1 0 0 0-1.41 1.41l.7.71a1 1 0 0 0 1.42-1.42zM18.36 18.36a1 1 0 0 0-1.41 1.41l.7.71a1 1 0 0 0 1.42-1.42zM3 11H2a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zm19 0h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zM6.35 17.66l-.71.7a1 1 0 1 0 1.42 1.42l.7-.71a1 1 0 0 0-1.41-1.41zM18.36 5.64l.71-.7a1 1 0 1 0-1.42-1.42l-.7.71a1 1 0 0 0 1.41 1.41z"/></svg>
+</button>
+
+<header class="section top">
+  <a class="backhome" href="index.html">&larr; 8bitkick</a>
+  <div class="lead-layout">
+    <div class="coverage-col">
+      <p class="eyebrow">Cassette emulator</p>
+      <h1>PlayUEF</h1>
+      <p class="lead">A free, web-based player for UEF-format Acorn cassette games. Just connect your 8-bit Acorn computer's cassette port to the headphone socket on a laptop or smartphone and you're ready to load games.</p>
+      <div class="socials-row">
+        <a class="follow-link" href="https://github.com/8bitkick/PlayUEF" target="_blank" rel="noopener">Source on GitHub</a>
+      </div>
+    </div>
+    <figure class="lead-chart chart-fig">
+      <img class="lead-photo" src="img/playuef.gif" alt="Animated virtual cassette deck">
+    </figure>
+  </div>
+</header>
+
+<section class="section odd" id="archive">
+  <h2>Load retro games from your browser</h2>
+  <p>PlayUEF is a JavaScript player for UEF-format Acorn Electron and BBC Micro cassette games. Conversion from UEF to 44.1KHz WAV is done in the browser and played through a nice virtual cassette deck — no peripherals, no fuss. All you need is an Acorn retro machine and a <a href="https://www.google.com/search?q=Acorn+BBC+Micro+7+pin+DIN+to+2+x+3.5mm+%26+2.5mm+jack+cable" target="_blank" rel="noopener">compatible cassette lead</a>.</p>
+  <p>Over 2,000 cassette games have been preserved in UEF, <a href="https://www.stairwaytohell.com" target="_blank" rel="noopener">archived at Stairway to Hell</a>. Pick your machine, find a title, and it loads straight into PlayUEF in your browser.</p>
+
+  <div class="machines" id="machines">
+    <button class="machine" data-machine="electron" type="button">
+      <img src="img/acorn-electron.jpg" alt="Acorn Electron home computer">
+      <div class="m-body"><h3>Acorn Electron</h3><p id="count-electron">…</p></div>
+    </button>
+    <button class="machine" data-machine="bbc" type="button">
+      <img src="img/bbc-micro.jpg" alt="BBC Micro model B computer">
+      <div class="m-body"><h3>BBC Micro</h3><p id="count-bbc">…</p></div>
+    </button>
+  </div>
+
+  <div id="gallery" hidden>
+    <div class="toolbar">
+      <input class="search" id="search" type="search" placeholder="Search titles or publishers…" autocomplete="off">
+      <button class="pill" id="switch" type="button">Switch machine</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="more hidden" id="more"></p>
+  </div>
+</section>
+
+<footer class="section footer">
+  <nav class="footernav">
+    <a href="index.html">Home</a>
+    <a href="https://8bitkick.github.io/PlayUEF/" target="_blank" rel="noopener">Launch PlayUEF</a>
+    <a href="https://github.com/8bitkick/PlayUEF" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+  <p><small>PlayUEF is free and open source. UEF is a format created to archive media for Acorn computers; all game content remains the property of its respective owners.</small></p>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var saved = localStorage.getItem('theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  else if (window.matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
+  document.querySelector('.theme-toggle').addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var CAP = 500;                 // max cards rendered at once
+  var all = [], machine = null, q = '';
+  var grid = document.getElementById('grid');
+  var gallery = document.getElementById('gallery');
+  var search = document.getElementById('search');
+  var countEl = document.getElementById('count');
+  var moreEl = document.getElementById('more');
+
+  function runsOn(g, m) {
+    return m === 'bbc' ? (g.platform === 'BBC' || g.platform === 'BBC/Electron')
+                       : (g.platform === 'Electron' || g.platform === 'BBC/Electron');
+  }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function render() {
+    var needle = q.trim().toLowerCase();
+    var matches = all.filter(function (g) {
+      if (!runsOn(g, machine)) return false;
+      if (!needle) return true;
+      return (g.title + ' ' + g.publisher).toLowerCase().indexOf(needle) !== -1;
+    });
+
+    var shown = matches.slice(0, CAP), html = '';
+    for (var i = 0; i < shown.length; i++) {
+      var g = shown[i], both = g.platform === 'BBC/Electron';
+      html += '<a class="game" href="' + g.play + '" target="_blank" rel="noopener">'
+        +   '<span class="g-title">' + esc(g.title) + '</span>'
+        +   '<span class="g-meta">' + esc(g.publisher)
+        +       (g.version ? ' · ' + esc(g.version) : '')
+        +       (both ? ' <span class="badge both">BBC + Elk</span>' : '')
+        +   '</span>'
+        + '</a>';
+    }
+    grid.innerHTML = html;
+    countEl.textContent = matches.length + ' game' + (matches.length === 1 ? '' : 's');
+    if (matches.length > CAP) {
+      moreEl.textContent = 'Showing first ' + CAP + ' — refine your search to see more.';
+      moreEl.classList.remove('hidden');
+    } else { moreEl.classList.add('hidden'); }
+  }
+
+  var switchBtn = document.getElementById('switch');
+
+  function selectMachine(m, focus) {
+    machine = m;
+    document.querySelectorAll('.machine').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.machine === m); });
+    gallery.hidden = false;
+    search.value = ''; q = '';
+    render();
+    if (focus) search.focus({ preventScroll: true });
+  }
+
+  document.querySelectorAll('.machine').forEach(function (b) {
+    b.addEventListener('click', function () { selectMachine(b.dataset.machine, true); });
+  });
+  switchBtn.addEventListener('click', function () {
+    selectMachine(machine === 'electron' ? 'bbc' : 'electron', true);
+  });
+  var t;
+  search.addEventListener('input', function () {
+    q = search.value; clearTimeout(t); t = setTimeout(render, 120);
+  });
+
+  fetch('games.json').then(function (r) { return r.json(); }).then(function (data) {
+    all = data.games;
+    var nb = 0, ne = 0;
+    all.forEach(function (g) { if (runsOn(g, 'bbc')) nb++; if (runsOn(g, 'electron')) ne++; });
+    document.getElementById('count-bbc').textContent = nb.toLocaleString() + ' games';
+    document.getElementById('count-electron').textContent = ne.toLocaleString() + ' games';
+    selectMachine('electron', false);
+  }).catch(function () {
+    document.getElementById('count-bbc').textContent = '';
+    document.getElementById('count-electron').textContent = '';
+  });
+})();
+</script>
+
+</body>
+</html>

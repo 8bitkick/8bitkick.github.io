@@ -1,0 +1,21 @@
+# 8bitkick — allow all crawlers, including AI engines (per web-properties plan §10)
+User-agent: *
+Allow: /
+
+# Explicitly welcome AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://8bitkick.cc/sitemap.xml
