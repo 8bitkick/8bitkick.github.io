@@ -47,21 +47,25 @@
   }
   .pill:hover { border-color: var(--primary); color: var(--primary); }
 
-  /* ---------- grid (masonry columns: cards keep natural height, no wasted space) ---------- */
-  .grid { column-count: 3; column-gap: .7rem; }
-  @media (max-width: 720px) { .grid { column-count: 2; } }
-  @media (max-width: 460px) { .grid { column-count: 1; } }
+  /* ---------- grid: each game is a cassette case, title on the inlay label ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: .5rem; }
   .game {
-    display: block; break-inside: avoid; margin: 0 0 .7rem; text-decoration: none; color: inherit;
-    border: 1px solid var(--line); border-radius: 12px; background: var(--card);
-    padding: .85rem .95rem; transition: border-color .15s ease, transform .12s ease;
+    position: relative; display: flex; flex-direction: column; justify-content: center;
+    aspect-ratio: 999 / 161;                 /* matches img/tape-case.png */
+    background: url('img/tape-case.png') center / 100% 100% no-repeat;
+    padding: 4px 6% 0 10%;                    /* keep text on the cream label, clear of the hinges; slight downward nudge */
+    text-decoration: none; color: #1c1c1c;    /* dark ink on the cream label, both themes */
+    overflow: hidden; transition: transform .12s ease, filter .12s ease;
   }
-  .game:hover { border-color: var(--primary); transform: translateY(-2px); }
-  .game .g-title { display: block; font-weight: 650; letter-spacing: -.01em; line-height: 1.2; margin-bottom: .4rem; }
-  .game .g-meta { font-size: .82rem; color: var(--ink-soft); display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
-  .badge { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
-           padding: .12rem .45rem; border-radius: 6px; background: var(--primary-tint); color: var(--primary-dark); }
-  .badge.both { background: var(--line); color: var(--ink-soft); }
+  .game:hover, .game:focus-visible { transform: translateY(-2px); filter: drop-shadow(0 7px 16px rgba(0,0,0,.22)); outline: none; }
+  .game .g-title {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    font-weight: 650; letter-spacing: -.01em; line-height: 1.12; font-size: .86rem; color: #1c1c1c;
+  }
+  .game .g-meta { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; margin-top: .15rem; font-size: .7rem; color: #5a5a5a; }
+  .badge { position: absolute; right: 8%; bottom: 13%; font-size: .58rem; font-weight: 700;
+           text-transform: uppercase; letter-spacing: .04em; padding: .08rem .4rem; border-radius: 5px;
+           background: rgba(0,0,0,.1); color: #555; }
   .more { text-align: center; color: var(--ink-soft); margin-top: 1.5rem; font-size: .9rem; }
   .hidden { display: none !important; }
 </style>
@@ -171,12 +175,13 @@
     var shown = matches.slice(0, CAP), html = '';
     for (var i = 0; i < shown.length; i++) {
       var g = shown[i], both = g.platform === 'BBC/Electron';
+      var plat = both ? 'BBC + Elk' : (g.platform === 'BBC' ? 'BBC' : 'Electron');
       html += '<a class="game" href="' + g.play + '" target="_blank" rel="noopener">'
         +   '<span class="g-title">' + esc(g.title) + '</span>'
         +   '<span class="g-meta">' + esc(g.publisher)
         +       (g.version ? ' · ' + esc(g.version) : '')
-        +       (both ? ' <span class="badge both">BBC + Elk</span>' : '')
         +   '</span>'
+        +   '<span class="badge' + (both ? ' both' : '') + '">' + plat + '</span>'
         + '</a>';
     }
     grid.innerHTML = html;
