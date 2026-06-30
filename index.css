@@ -291,6 +291,8 @@ blockquote cite {
 .chart-fig { margin: 0; }
 .chart-fig + .chart-fig { margin-top: 1.25rem; }
 .lead-photo { display: block; width: 100%; border-radius: var(--radius); }
+.photo-link { display: block; line-height: 0; border-radius: var(--radius); overflow: hidden; transition: opacity .15s ease, box-shadow .15s ease; }
+.photo-link:hover { opacity: .94; box-shadow: 0 12px 30px rgba(0,0,0,.12); }
 
 .chart {
   display: block;
